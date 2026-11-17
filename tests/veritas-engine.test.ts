@@ -18,6 +18,7 @@ import {
   jaccardSimilarity,
   projectResponseToArena,
 } from "@/lib/veritas-engine/arena";
+import { analyzeStudentNote } from "@/lib/veritas-engine/study-notebook";
 
 describe("1. Motor Raio-X da IA (Computacao, Saude, Negocios)", () => {
   it("simula colapso quando limite e ultrapassado e aprova apenas linha e correcao certas", () => {
@@ -116,5 +117,29 @@ describe("4. Conformidade Edital UniMAX & Zero Emojis", () => {
 
     const emojiRegex = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u;
     expect(emojiRegex.test(text)).toBe(false);
+  });
+});
+
+describe("5. Motor Caderno Pessoal e Radar de Provas (Copiloto Critico)", () => {
+  it("detecta ponto cego quando anotacao nao explica por que nem onde falha", () => {
+    const shallow = analyzeStudentNote({
+      subjectName: "Redes de Computadores",
+      noteTitle: "TCP",
+      noteContent:
+        "O protocolo TCP garante entrega ordenada dos pacotes usando confirmacoes ACK entre cliente e servidor na rede.",
+      examDaysLeft: 2,
+    });
+    expect(shallow.examDateLabel).toBe("Prova em 2 dias");
+    expect(shallow.readinessPct).toBeLessThan(70);
+    expect(shallow.blindspot.toLowerCase()).toMatch(/porqu[eê]/);
+
+    const solid = analyzeStudentNote({
+      subjectName: "Sistemas Operacionais",
+      noteTitle: "Concorrencia",
+      noteContent:
+        "Quando dois processos acessam o saldo juntos ocorre falha de sobrescrita porque falta trava. Se nao verificarmos saldo >= valor antes da escrita, ha perda financeira.",
+      examDaysLeft: 5,
+    });
+    expect(solid.readinessPct).toBeGreaterThanOrEqual(75);
   });
 });

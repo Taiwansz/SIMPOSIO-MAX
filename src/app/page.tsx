@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import {
   BarChart3,
+  BookOpen,
   FileText,
   Home,
   Presentation,
@@ -12,11 +13,13 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import OverviewHub, { VeritasTab } from "@/components/OverviewHub";
+import StudyNotebook from "@/components/StudyNotebook";
 import AutopsyLab from "@/components/AutopsyLab";
 import MutationTest from "@/components/MutationTest";
 import LiveArena from "@/components/LiveArena";
 import FacultyOverview from "@/components/FacultyOverview";
 import { analyzeArenaState } from "@/lib/veritas-engine/arena";
+import { buildMutationChallenge } from "@/lib/veritas-engine/mutation";
 import {
   SEED_ARENA_RESPONSES,
   SEED_AUTHORSHIP_PROOFS,
@@ -24,6 +27,7 @@ import {
   SEED_AUTOPSY_LOGS,
   SEED_COHORT_RESULTS,
   SEED_JURY_VOTES,
+  SEED_STUDY_NOTES,
 } from "@/lib/veritas-engine/seed-data";
 import {
   ArenaAnalysis,
@@ -33,6 +37,8 @@ import {
   AutopsyLog,
   CohortResultWeek,
   JuryVote,
+  MutationChallenge,
+  StudyNote,
 } from "@/lib/veritas-engine/types";
 
 interface VeritasState {
@@ -44,6 +50,7 @@ interface VeritasState {
   arenaAnalysis: ArenaAnalysis;
   cohortResults: CohortResultWeek[];
   juryVotes: JuryVote[];
+  studyNotes: StudyNote[];
 }
 
 const INITIAL_STATE: VeritasState = {
@@ -55,11 +62,14 @@ const INITIAL_STATE: VeritasState = {
   arenaAnalysis: analyzeArenaState(SEED_ARENA_RESPONSES),
   cohortResults: SEED_COHORT_RESULTS,
   juryVotes: SEED_JURY_VOTES,
+  studyNotes: SEED_STUDY_NOTES,
 };
 
 export default function HomePage() {
   const [state, setState] = useState<VeritasState>(INITIAL_STATE);
   const [activeTab, setActiveTab] = useState<VeritasTab>("home");
+  const [noteMutationChallenge, setNoteMutationChallenge] =
+    useState<MutationChallenge | null>(null);
 
   const loadState = useCallback(async () => {
     try {
@@ -78,6 +88,7 @@ export default function HomePage() {
     if (typeof window !== "undefined") {
       const tabParam = new URLSearchParams(window.location.search).get("tab");
       if (
+        tabParam === "notebook" ||
         tabParam === "autopsy" ||
         tabParam === "mutation" ||
         tabParam === "arena" ||
@@ -94,6 +105,7 @@ export default function HomePage() {
     icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
   }> = [
     { id: "home", label: "Inicio", icon: Home },
+    { id: "notebook", label: "Caderno", icon: BookOpen },
     { id: "autopsy", label: "Raio-X da IA", icon: ScanSearch },
     { id: "mutation", label: "Teste de Autoria", icon: ShieldCheck },
     { id: "arena", label: "Arena ao Vivo", icon: Radio },
@@ -102,6 +114,12 @@ export default function HomePage() {
 
   const solvedCount = state.autopsyLogs.filter((l) => l.solved).length;
   const verifiedCount = state.proofs.filter((p) => p.passed).length;
+
+  const handleTestNoteInMutation = (noteContent: string, noteTitle: string) => {
+    const ch = buildMutationChallenge(undefined, noteContent);
+    setNoteMutationChallenge({ ...ch, artifactTitle: noteTitle || "Minha Anotacao" });
+    setActiveTab("mutation");
+  };
 
   return (
     <div className="relative min-h-[100dvh] bg-[#0A0A0A] text-[#F0EDE6] pb-28 md:pb-14 md:pl-24">
@@ -169,11 +187,11 @@ export default function HomePage() {
               type="button"
               onClick={() => setActiveTab(item.id)}
               aria-label={item.label}
-              className={`flex h-11 w-11 items-center justify-center rounded-full transition-all duration-300 apple-ease active:scale-[0.92] ${
+              className={`flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 apple-ease active:scale-[0.92] ${
                 isActive ? "bg-[#C8B560] text-[#0A0A0A]" : "text-[#F0EDE6]/65"
               }`}
             >
-              <Icon className="h-5 w-5" strokeWidth={isActive ? 2 : 1.6} />
+              <Icon className="h-4.5 w-4.5" strokeWidth={isActive ? 2 : 1.6} />
             </button>
           );
         })}
@@ -181,9 +199,9 @@ export default function HomePage() {
         <Link
           href="/apresentacao"
           aria-label="Apresentar"
-          className="flex h-11 w-11 items-center justify-center rounded-full text-[#F0EDE6]/65"
+          className="flex h-10 w-10 items-center justify-center rounded-full text-[#F0EDE6]/65"
         >
-          <Presentation className="h-5 w-5" strokeWidth={1.6} />
+          <Presentation className="h-4.5 w-4.5" strokeWidth={1.6} />
         </Link>
       </nav>
 
@@ -240,10 +258,19 @@ export default function HomePage() {
         <main key={activeTab} className="apple-view-enter">
           {activeTab === "home" && (
             <OverviewHub
+              notesCount={state.studyNotes.length}
               solvedAutopsiesCount={solvedCount}
               verifiedProofsCount={verifiedCount}
               arenaOriginality={state.arenaAnalysis.originalityIndex}
               onNavigate={(tab) => setActiveTab(tab)}
+            />
+          )}
+
+          {activeTab === "notebook" && (
+            <StudyNotebook
+              notes={state.studyNotes}
+              onNoteSaved={loadState}
+              onTestNoteInMutation={handleTestNoteInMutation}
             />
           )}
 
@@ -252,7 +279,10 @@ export default function HomePage() {
           )}
 
           {activeTab === "mutation" && (
-            <MutationTest onProofSaved={loadState} />
+            <MutationTest
+              initialChallenge={noteMutationChallenge}
+              onProofSaved={loadState}
+            />
           )}
 
           {activeTab === "arena" && (

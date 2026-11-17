@@ -1,16 +1,18 @@
 "use client";
 
 import React from "react";
-import { ArrowUpRight, Radio, ScanSearch, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, BookOpen, Radio, ScanSearch, ShieldCheck } from "lucide-react";
 
 export type VeritasTab =
   | "home"
+  | "notebook"
   | "autopsy"
   | "mutation"
   | "arena"
   | "faculty";
 
 interface OverviewHubProps {
+  notesCount: number;
   solvedAutopsiesCount: number;
   verifiedProofsCount: number;
   arenaOriginality: number;
@@ -18,6 +20,7 @@ interface OverviewHubProps {
 }
 
 export default function OverviewHub({
+  notesCount,
   solvedAutopsiesCount,
   verifiedProofsCount,
   arenaOriginality,
@@ -30,6 +33,13 @@ export default function OverviewHub({
     stat: string;
     icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
   }> = [
+    {
+      id: "notebook",
+      title: "Caderno e Provas",
+      subtitle: "Anote suas aulas, acompanhe datas de prova e veja o que faltou estudar.",
+      stat: `${notesCount} materias`,
+      icon: BookOpen,
+    },
     {
       id: "autopsy",
       title: "Raio-X da IA",
@@ -81,8 +91,8 @@ export default function OverviewHub({
         </button>
       </section>
 
-      {/* 3 Modulos Principais acessados direto por icones */}
-      <section className="grid grid-cols-1 gap-5 md:grid-cols-3">
+      {/* 4 Modulos Principais acessados direto por icones */}
+      <section className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {pillars.map((item) => {
           const Icon = item.icon;
           return (

@@ -6,11 +6,17 @@ import { PRESET_MUTATION_CHALLENGES } from "@/lib/veritas-engine/mutation";
 import { MutationChallenge } from "@/lib/veritas-engine/types";
 
 interface MutationTestProps {
+  initialChallenge?: MutationChallenge | null;
   onProofSaved: () => Promise<void>;
 }
 
-export default function MutationTest({ onProofSaved }: MutationTestProps) {
-  const [challenge, setChallenge] = useState<MutationChallenge>(PRESET_MUTATION_CHALLENGES[0]);
+export default function MutationTest({
+  initialChallenge,
+  onProofSaved,
+}: MutationTestProps) {
+  const [challenge, setChallenge] = useState<MutationChallenge>(
+    initialChallenge ?? PRESET_MUTATION_CHALLENGES[0]
+  );
   const [customInput, setCustomInput] = useState("");
   const [showCustom, setShowCustom] = useState(false);
   const [started, setStarted] = useState(false);
@@ -23,6 +29,18 @@ export default function MutationTest({ onProofSaved }: MutationTestProps) {
     proofHash: string;
     feedback: string;
   } | null>(null);
+
+  useEffect(() => {
+    if (initialChallenge) {
+      setChallenge(initialChallenge);
+      setShowCustom(false);
+      setStarted(true);
+      setSecondsLeft(60);
+      setSelectedLine(-1);
+      setSelectedFixId("");
+      setResult(null);
+    }
+  }, [initialChallenge]);
 
   useEffect(() => {
     if (!started || result) return;

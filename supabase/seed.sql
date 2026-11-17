@@ -144,3 +144,51 @@ INSERT INTO public.veritas_jury_votes (id, evaluator_name, innovation_score, ped
 VALUES
 ('77777777-7777-4777-8777-777777777701', 'Auditoria Inicial UniMAX', 2.0, 4.0, 4.0, 'Abordagem inedita que coloca a IA sob exame forense humano e mede a originalidade da sala em tempo real.')
 ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO public.veritas_study_notes (
+    id, student_name, ra, subject_name, exam_days_left, exam_date_label,
+    note_title, note_content, copilot_strength, copilot_blindspot, copilot_question, readiness_pct
+) VALUES
+(
+    '88888888-8888-4888-8888-888888888801',
+    'Matheus Sousa dos Santos',
+    '52319400',
+    'Sistemas Operacionais',
+    3,
+    'Prova em 3 dias',
+    'Travas e Saques Concorrentes',
+    E'Quando dois processos acessam o mesmo saldo ao mesmo tempo, o valor pode ser sobrescrito.\nPor isso nao podemos ler e gravar sem protecao no banco.\nSe o codigo usar trava exclusiva e verificar saldo >= valor, o saque duplicado nao acontece.',
+    'Voce explicou o porquê da falha de concorrencia e incluiu a regra pratica de protecao.',
+    'Faltou anotar o risco de travamento mutuo (deadlock) se duas contas bloquearem na ordem inversa.',
+    'O que acontece se a conta A esperar a conta B enquanto B espera A?',
+    84
+),
+(
+    '88888888-8888-4888-8888-888888888802',
+    'Matheus Sousa dos Santos',
+    '52319400',
+    'Redes de Computadores',
+    8,
+    'Prova em 8 dias',
+    'Controle de Fluxo TCP',
+    E'O protocolo TCP garante entrega ordenada usando confirmacoes ACK.\nEle divide os dados em pacotes menores para atravessar a rede.',
+    'A definicao basica da entrega ordenada e dos pacotes esta correta.',
+    'Sua nota nao explicou o que acontece com a velocidade quando ocorre perda de pacotes na rede.',
+    'Como o TCP reduz a janela de envio quando um pacote se perde no caminho?',
+    56
+),
+(
+    '88888888-8888-4888-8888-888888888803',
+    'Matheus Sousa dos Santos',
+    '52319400',
+    'Inteligencia Artificial',
+    14,
+    'Prova em 14 dias',
+    'Por que Modelos Alucinam',
+    E'Modelos de linguagem preveem a proxima palavra mais provavel.\nQuando falta dado real ou o usuario pressiona no pedido, o modelo inventa detalhes com confianca.',
+    'Excelente conexao entre previsao estatistica, pressao no pedido e falsa confianca.',
+    'Vale registrar um exemplo pratico de como auditar a saida antes de confiar nela.',
+    'Como voce detecta na pratica quando uma resposta fluente esta escondendo um dado falso?',
+    88
+)
+ON CONFLICT (id) DO UPDATE SET note_content = EXCLUDED.note_content;

@@ -87,6 +87,25 @@ CREATE TABLE IF NOT EXISTS public.veritas_jury_votes (
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- 7. Caderno do Aluno, Materias e Radar de Provas (Copiloto Critico estilo ThSyr)
+CREATE TABLE IF NOT EXISTS public.veritas_study_notes (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    student_name TEXT NOT NULL,
+    ra TEXT NOT NULL,
+    subject_name TEXT NOT NULL,
+    exam_days_left INTEGER NOT NULL DEFAULT 7 CHECK (exam_days_left >= 0 AND exam_days_left <= 180),
+    exam_date_label TEXT NOT NULL,
+    note_title TEXT NOT NULL,
+    note_content TEXT NOT NULL,
+    copilot_strength TEXT NOT NULL,
+    copilot_blindspot TEXT NOT NULL,
+    copilot_question TEXT NOT NULL,
+    readiness_pct INTEGER NOT NULL DEFAULT 70 CHECK (readiness_pct >= 0 AND readiness_pct <= 100),
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_veritas_study_notes_created ON public.veritas_study_notes(created_at DESC);
+
 -- Row Level Security (RLS)
 ALTER TABLE public.veritas_autopsy_cases ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.veritas_autopsy_logs ENABLE ROW LEVEL SECURITY;
@@ -94,6 +113,7 @@ ALTER TABLE public.veritas_authorship_proofs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.veritas_arena_responses ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.veritas_cohort_results ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.veritas_jury_votes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.veritas_study_notes ENABLE ROW LEVEL SECURITY;
 
 DO $$
 BEGIN
@@ -114,5 +134,8 @@ BEGIN
     END IF;
     IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'veritas_jury_votes' AND policyname = 'Public read veritas jury') THEN
         CREATE POLICY "Public read veritas jury" ON public.veritas_jury_votes FOR SELECT TO anon, authenticated USING (true);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE tablename = 'veritas_study_notes' AND policyname = 'Public read veritas study notes') THEN
+        CREATE POLICY "Public read veritas study notes" ON public.veritas_study_notes FOR SELECT TO anon, authenticated USING (true);
     END IF;
 END $$;

@@ -8,6 +8,7 @@ import {
   SEED_AUTOPSY_LOGS,
   SEED_COHORT_RESULTS,
   SEED_JURY_VOTES,
+  SEED_STUDY_NOTES,
 } from "@/lib/veritas-engine/seed-data";
 import {
   ArenaResponse,
@@ -16,6 +17,7 @@ import {
   AutopsyLog,
   CohortResultWeek,
   JuryVote,
+  StudyNote,
 } from "@/lib/veritas-engine/types";
 
 export const dynamic = "force-dynamic";
@@ -29,11 +31,12 @@ export async function GET() {
   let arenaResponses: ArenaResponse[] = SEED_ARENA_RESPONSES;
   let cohortResults: CohortResultWeek[] = SEED_COHORT_RESULTS;
   let juryVotes: JuryVote[] = SEED_JURY_VOTES;
+  let studyNotes: StudyNote[] = SEED_STUDY_NOTES;
   let supabaseConnected = false;
 
   if (supabase) {
     try {
-      const [casesRes, logsRes, proofsRes, arenaRes, cohortRes, juryRes] =
+      const [casesRes, logsRes, proofsRes, arenaRes, cohortRes, juryRes, notesRes] =
         await Promise.all([
           supabase.from("veritas_autopsy_cases").select("*"),
           supabase
@@ -60,6 +63,11 @@ export async function GET() {
             .select("*")
             .order("created_at", { ascending: false })
             .limit(20),
+          supabase
+            .from("veritas_study_notes")
+            .select("*")
+            .order("exam_days_left", { ascending: true })
+            .limit(20),
         ]);
 
       if (!casesRes.error && casesRes.data && casesRes.data.length > 0) {
@@ -75,6 +83,9 @@ export async function GET() {
         cohortResults = cohortRes.data as CohortResultWeek[];
       }
       if (!juryRes.error && juryRes.data) juryVotes = juryRes.data as JuryVote[];
+      if (!notesRes.error && notesRes.data && notesRes.data.length > 0) {
+        studyNotes = notesRes.data as StudyNote[];
+      }
     } catch {
       supabaseConnected = false;
     }
@@ -91,5 +102,6 @@ export async function GET() {
     arenaAnalysis,
     cohortResults,
     juryVotes,
+    studyNotes,
   });
 }

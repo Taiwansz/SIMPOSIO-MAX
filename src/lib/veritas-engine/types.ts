@@ -95,3 +95,19 @@ export interface JuryVote {
   note: string;
   created_at: string;
 }
+
+export interface StudyNote {
+  id: string;
+  student_name: string;
+  ra: string;
+  subject_name: string;
+  exam_days_left: number;
+  exam_date_label: string;
+  note_title: string;
+  note_content: string;
+  copilot_strength: string;
+  copilot_blindspot: string;
+  copilot_question: string;
+  readiness_pct: number;
+  created_at: string;
+}

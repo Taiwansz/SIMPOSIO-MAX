@@ -5,6 +5,7 @@ import {
   AutopsyLog,
   CohortResultWeek,
   JuryVote,
+  StudyNote,
 } from "./types";
 
 const nowIso = new Date().toISOString();
@@ -216,6 +217,66 @@ export const SEED_JURY_VOTES: JuryVote[] = [
     pedagogical_score: 4.0,
     impact_score: 4.0,
     note: "Abordagem inedita que coloca a IA sob exame forense humano e mede a originalidade da sala em tempo real.",
+    created_at: nowIso,
+  },
+];
+
+export const SEED_STUDY_NOTES: StudyNote[] = [
+  {
+    id: "88888888-8888-4888-8888-888888888801",
+    student_name: "Matheus Sousa dos Santos",
+    ra: "52319400",
+    subject_name: "Sistemas Operacionais",
+    exam_days_left: 3,
+    exam_date_label: "Prova em 3 dias",
+    note_title: "Travas e Saques Concorrentes",
+    note_content:
+      "Quando dois processos acessam o mesmo saldo ao mesmo tempo, o valor pode ser sobrescrito.\nPor isso nao podemos ler e gravar sem protecao no banco.\nSe o codigo usar trava exclusiva e verificar saldo >= valor, o saque duplicado nao acontece.",
+    copilot_strength:
+      "Voce explicou o porquê da falha de concorrencia e incluiu a regra pratica de protecao.",
+    copilot_blindspot:
+      "Faltou anotar o risco de travamento mutuo (deadlock) se duas contas bloquearem na ordem inversa.",
+    copilot_question:
+      "O que acontece se a conta A esperar a conta B enquanto B espera A?",
+    readiness_pct: 84,
+    created_at: nowIso,
+  },
+  {
+    id: "88888888-8888-4888-8888-888888888802",
+    student_name: "Matheus Sousa dos Santos",
+    ra: "52319400",
+    subject_name: "Redes de Computadores",
+    exam_days_left: 8,
+    exam_date_label: "Prova em 8 dias",
+    note_title: "Controle de Fluxo TCP",
+    note_content:
+      "O protocolo TCP garante entrega ordenada usando confirmacoes ACK.\nEle divide os dados em pacotes menores para atravessar a rede.",
+    copilot_strength:
+      "A definicao basica da entrega ordenada e dos pacotes esta correta.",
+    copilot_blindspot:
+      "Sua nota nao explicou o que acontece com a velocidade quando ocorre perda de pacotes na rede.",
+    copilot_question:
+      "Como o TCP reduz a janela de envio quando um pacote se perde no caminho?",
+    readiness_pct: 56,
+    created_at: nowIso,
+  },
+  {
+    id: "88888888-8888-4888-8888-888888888803",
+    student_name: "Matheus Sousa dos Santos",
+    ra: "52319400",
+    subject_name: "Inteligencia Artificial",
+    exam_days_left: 14,
+    exam_date_label: "Prova em 14 dias",
+    note_title: "Por que Modelos Alucinam",
+    note_content:
+      "Modelos de linguagem preveem a proxima palavra mais provavel.\nQuando falta dado real ou o usuario pressiona no pedido, o modelo inventa detalhes com confianca.",
+    copilot_strength:
+      "Excelente conexao entre previsao estatistica, pressao no pedido e falsa confianca.",
+    copilot_blindspot:
+      "Vale registrar um exemplo pratico de como auditar a saida antes de confiar nela.",
+    copilot_question:
+      "Como voce detecta na pratica quando uma resposta fluente esta escondendo um dado falso?",
+    readiness_pct: 88,
     created_at: nowIso,
   },
 ];

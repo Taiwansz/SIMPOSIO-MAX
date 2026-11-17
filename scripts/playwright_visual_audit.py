@@ -71,6 +71,7 @@ def main() -> None:
 
             desktop_nav = page.locator("nav[aria-label='Navegacao principal']")
             for label, fname in [
+                ("Caderno", "02b_desktop_notebook.png"),
                 ("Raio-X da IA", "02_desktop_autopsy.png"),
                 ("Teste de Autoria", "03_desktop_mutation.png"),
                 ("Arena ao Vivo", "04_desktop_arena.png"),
