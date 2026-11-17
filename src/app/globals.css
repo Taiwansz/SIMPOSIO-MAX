@@ -11,6 +11,7 @@
   --font-display: "Space Grotesk", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-logo: "Caveat", cursive, sans-serif;
 }
 
 @layer base {
@@ -34,6 +35,10 @@
   .font-mono {
     font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
+  }
+
+  .font-logo {
+    font-family: var(--font-logo);
   }
 }
 

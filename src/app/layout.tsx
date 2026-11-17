@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "VERITAS — De Quem e a Resposta? | IV Simposio de IA UniMAX",
+  title: "Thinka — Plataforma Educacional para Alunos e Professores",
   description:
-    "Plataforma de Raio-X de Falhas da IA, Prova de Autoria em 60s e Arena ao Vivo da Sala de Aula. IV Simposio de Inteligencia Artificial da UniMAX.",
+    "Organize seus estudos, conecte suas turmas, acompanhe o radar de provas e aprenda com autonomia e clareza na Thinka.",
 };
 
 export default function RootLayout({
@@ -18,7 +18,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
           rel="stylesheet"
         />
       </head>
