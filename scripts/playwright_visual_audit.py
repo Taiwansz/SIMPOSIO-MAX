@@ -63,60 +63,78 @@ def main() -> None:
             page.on("console", lambda msg: console_errors.append(msg.text) if msg.type == "error" else None)
             page.on("pageerror", lambda err: page_errors.append(str(err)))
 
+            # 1. Landing Page Pública
             page.goto(base_url, wait_until="networkidle")
             page.wait_for_timeout(1000)
             if page.evaluate("document.documentElement.scrollWidth > window.innerWidth"):
-                raise AssertionError("Overflow horizontal detectado no Desktop 1440x900.")
+                raise AssertionError("Overflow horizontal detectado na Landing Page Desktop.")
+            page.screenshot(path=str(SCREENSHOT_DIR / "00_desktop_landing.png"))
+
+            # 2. Página de Login
+            page.goto(f"{base_url}/login", wait_until="networkidle")
+            page.wait_for_timeout(700)
+            page.screenshot(path=str(SCREENSHOT_DIR / "14_desktop_login.png"))
+
+            # 3. Página de Cadastro
+            page.goto(f"{base_url}/cadastro", wait_until="networkidle")
+            page.wait_for_timeout(700)
+            page.screenshot(path=str(SCREENSHOT_DIR / "15_desktop_cadastro.png"))
+
+            # 4. Ambiente Interno (Dashboard)
+            page.goto(f"{base_url}/dashboard", wait_until="networkidle")
+            page.wait_for_timeout(1000)
+            if page.evaluate("document.documentElement.scrollWidth > window.innerWidth"):
+                raise AssertionError("Overflow horizontal detectado no Dashboard Desktop 1440x900.")
             page.screenshot(path=str(SCREENSHOT_DIR / "01_desktop_home.png"))
 
             desktop_nav = page.locator("nav[aria-label='Navegacao principal']")
 
-            # 1. Estudos (Dock)
+            # Estudos (Dock)
             desktop_nav.get_by_role("button", name="Estudos").click()
             page.wait_for_timeout(700)
             page.screenshot(path=str(SCREENSHOT_DIR / "02b_desktop_notebook.png"))
 
-            # 2. Turmas (Dock)
+            # Turmas (Dock)
             desktop_nav.get_by_role("button", name="Turmas").click()
             page.wait_for_timeout(700)
             page.screenshot(path=str(SCREENSHOT_DIR / "09_desktop_classes.png"))
 
-            # 3. Raio-X da IA (via Menu Mais)
+            # Raio-X da IA (via Menu Mais)
             desktop_nav.get_by_role("button", name="Mais ferramentas").click()
             page.wait_for_timeout(400)
             page.get_by_role("button", name="Raio-X da IA").click()
             page.wait_for_timeout(700)
             page.screenshot(path=str(SCREENSHOT_DIR / "02_desktop_autopsy.png"))
 
-            # 4. Teste de Autoria (via Menu Mais)
+            # Teste de Autoria (via Menu Mais)
             desktop_nav.get_by_role("button", name="Mais ferramentas").click()
             page.wait_for_timeout(400)
             page.get_by_role("button", name="Teste de 60s").click()
             page.wait_for_timeout(700)
             page.screenshot(path=str(SCREENSHOT_DIR / "03_desktop_mutation.png"))
 
-            # 5. Arena ao Vivo (via Menu Mais)
+            # Arena ao Vivo (via Menu Mais)
             desktop_nav.get_by_role("button", name="Mais ferramentas").click()
             page.wait_for_timeout(400)
             page.get_by_role("button", name="Arena da Sala").click()
             page.wait_for_timeout(700)
             page.screenshot(path=str(SCREENSHOT_DIR / "04_desktop_arena.png"))
 
-            # 6. Resultados (via Menu Mais)
+            # Resultados (via Menu Mais)
             desktop_nav.get_by_role("button", name="Mais ferramentas").click()
             page.wait_for_timeout(400)
             page.get_by_role("button", name="Resultados & Banca").click()
             page.wait_for_timeout(700)
             page.screenshot(path=str(SCREENSHOT_DIR / "05_desktop_faculty.png"))
 
-            # 7. Perfil (via Menu do Usuario Topbar)
+            # Perfil (via Menu do Usuario Topbar)
             page.get_by_role("button", name="Abrir menu da conta").click()
             page.wait_for_timeout(400)
             page.get_by_role("button", name="Meu Perfil").click()
             page.wait_for_timeout(700)
             page.screenshot(path=str(SCREENSHOT_DIR / "10_desktop_profile.png"))
 
-            # 8. Ajustes (via Menu do Usuario Topbar)
+            # Ajustes (via Menu do Usuario Topbar)
             page.get_by_role("button", name="Abrir menu da conta").click()
             page.wait_for_timeout(400)
             page.get_by_role("button", name="Configurações").click()
@@ -132,7 +150,11 @@ def main() -> None:
             page.goto(base_url, wait_until="networkidle")
             page.wait_for_timeout(900)
             if page.evaluate("document.documentElement.scrollWidth > window.innerWidth"):
-                raise AssertionError("Overflow horizontal detectado no Mobile 390x844.")
+                raise AssertionError("Overflow horizontal detectado no Mobile 390x844 (Landing).")
+            page.screenshot(path=str(SCREENSHOT_DIR / "00_mobile_landing.png"))
+
+            page.goto(f"{base_url}/dashboard", wait_until="networkidle")
+            page.wait_for_timeout(900)
             page.screenshot(path=str(SCREENSHOT_DIR / "07_mobile_home.png"))
 
             mobile_nav = page.locator("nav[aria-label='Navegacao mobile']")
