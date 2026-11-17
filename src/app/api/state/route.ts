@@ -1,170 +1,95 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getSupabaseAdmin, getSupabasePublic } from "@/lib/supabase/server";
-import { compileEDAGReport } from "@/lib/epistemic-engine/edag";
-import { buildSpacedReviewSchedule, computeBrierCalibration } from "@/lib/epistemic-engine/bkt";
+import { analyzeArenaState } from "@/lib/veritas-engine/arena";
 import {
-  SEED_COHORT_METRICS,
-  SEED_EDAG_NODES,
-  SEED_ISOMORPHIC_SUBMISSIONS,
-  SEED_JURY_FEEDBACK,
-  SEED_SOCRATIC_LOGS,
-  SEED_STUDENT_STATES,
-} from "@/lib/epistemic-engine/seed-fallback";
+  SEED_ARENA_RESPONSES,
+  SEED_AUTHORSHIP_PROOFS,
+  SEED_AUTOPSY_CASES,
+  SEED_AUTOPSY_LOGS,
+  SEED_COHORT_RESULTS,
+  SEED_JURY_VOTES,
+} from "@/lib/veritas-engine/seed-data";
 import {
-  CohortWeekMetric,
-  EDAGNode,
-  IsomorphicSubmission,
-  JuryFeedback,
-  SocraticLog,
-  StudentNodeState,
-} from "@/lib/epistemic-engine/types";
+  ArenaResponse,
+  AuthorshipProof,
+  AutopsyCase,
+  AutopsyLog,
+  CohortResultWeek,
+  JuryVote,
+} from "@/lib/veritas-engine/types";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(request: NextRequest) {
-  const ra = request.nextUrl.searchParams.get("ra")?.trim() || "52319400";
+export async function GET() {
   const supabase = getSupabaseAdmin() || getSupabasePublic();
 
-  let nodes: EDAGNode[] = SEED_EDAG_NODES;
-  let allStudentStates: StudentNodeState[] = SEED_STUDENT_STATES;
-  let cohortMetrics: CohortWeekMetric[] = SEED_COHORT_METRICS;
-  let socraticLogs: SocraticLog[] = SEED_SOCRATIC_LOGS;
-  let submissions: IsomorphicSubmission[] = SEED_ISOMORPHIC_SUBMISSIONS;
-  let juryFeedback: JuryFeedback[] = SEED_JURY_FEEDBACK;
+  let cases: AutopsyCase[] = SEED_AUTOPSY_CASES;
+  let autopsyLogs: AutopsyLog[] = SEED_AUTOPSY_LOGS;
+  let proofs: AuthorshipProof[] = SEED_AUTHORSHIP_PROOFS;
+  let arenaResponses: ArenaResponse[] = SEED_ARENA_RESPONSES;
+  let cohortResults: CohortResultWeek[] = SEED_COHORT_RESULTS;
+  let juryVotes: JuryVote[] = SEED_JURY_VOTES;
   let supabaseConnected = false;
 
   if (supabase) {
     try {
-      const [
-        nodesRes,
-        statesRes,
-        cohortRes,
-        logsRes,
-        subsRes,
-        juryRes,
-      ] = await Promise.all([
-        supabase.from("simposio_edag_nodes").select("*").order("semester", { ascending: true }),
-        supabase.from("simposio_student_states").select("*"),
-        supabase.from("simposio_cohort_metrics").select("*").order("week_number", { ascending: true }),
-        supabase.from("simposio_socratic_logs").select("*").order("created_at", { ascending: false }).limit(20),
-        supabase.from("simposio_isomorphic_submissions").select("*").order("created_at", { ascending: false }).limit(15),
-        supabase.from("simposio_jury_feedback").select("*").order("created_at", { ascending: false }).limit(20),
-      ]);
+      const [casesRes, logsRes, proofsRes, arenaRes, cohortRes, juryRes] =
+        await Promise.all([
+          supabase.from("veritas_autopsy_cases").select("*"),
+          supabase
+            .from("veritas_autopsy_logs")
+            .select("*")
+            .order("created_at", { ascending: false })
+            .limit(12),
+          supabase
+            .from("veritas_authorship_proofs")
+            .select("*")
+            .order("created_at", { ascending: false })
+            .limit(12),
+          supabase
+            .from("veritas_arena_responses")
+            .select("*")
+            .order("created_at", { ascending: false })
+            .limit(30),
+          supabase
+            .from("veritas_cohort_results")
+            .select("*")
+            .order("week_number", { ascending: true }),
+          supabase
+            .from("veritas_jury_votes")
+            .select("*")
+            .order("created_at", { ascending: false })
+            .limit(20),
+        ]);
 
-      if (!nodesRes.error && nodesRes.data && nodesRes.data.length > 0) {
-        nodes = nodesRes.data as EDAGNode[];
+      if (!casesRes.error && casesRes.data && casesRes.data.length > 0) {
+        cases = casesRes.data as AutopsyCase[];
         supabaseConnected = true;
       }
-      if (!statesRes.error && statesRes.data && statesRes.data.length > 0) {
-        allStudentStates = statesRes.data as StudentNodeState[];
+      if (!logsRes.error && logsRes.data) autopsyLogs = logsRes.data as AutopsyLog[];
+      if (!proofsRes.error && proofsRes.data) proofs = proofsRes.data as AuthorshipProof[];
+      if (!arenaRes.error && arenaRes.data && arenaRes.data.length > 0) {
+        arenaResponses = arenaRes.data as ArenaResponse[];
       }
       if (!cohortRes.error && cohortRes.data && cohortRes.data.length > 0) {
-        cohortMetrics = cohortRes.data as CohortWeekMetric[];
+        cohortResults = cohortRes.data as CohortResultWeek[];
       }
-      if (!logsRes.error && logsRes.data) {
-        socraticLogs = logsRes.data as SocraticLog[];
-      }
-      if (!subsRes.error && subsRes.data) {
-        submissions = subsRes.data as IsomorphicSubmission[];
-      }
-      if (!juryRes.error && juryRes.data) {
-        juryFeedback = juryRes.data as JuryFeedback[];
-      }
+      if (!juryRes.error && juryRes.data) juryVotes = juryRes.data as JuryVote[];
     } catch {
       supabaseConnected = false;
     }
   }
 
-  const studentStates = allStudentStates.filter((s) => s.ra === ra);
-  const effectiveStates =
-    studentStates.length > 0
-      ? studentStates
-      : nodes.map((n) => ({
-          ra,
-          student_name: ra === "52319400" ? "Matheus Sousa dos Santos" : `Discente RA ${ra}`,
-          node_id: n.id,
-          p_mastery: 0.25,
-          p_transit: 0.2,
-          p_guess: 0.14,
-          p_slip: 0.12,
-          stability_hours: 48,
-          last_practiced_at: new Date().toISOString(),
-          brier_score: 0.18,
-          confidence_claimed: 0.5,
-          attempts_count: 1,
-        }));
-
-  const edagReport = compileEDAGReport(nodes);
-  const reviewSchedule = buildSpacedReviewSchedule(effectiveStates);
-
-  const brierRecords = socraticLogs
-    .filter((l) => l.ra === ra)
-    .map((l) => ({
-      confidenceClaimed: Number(l.confidence_declared),
-      isCorrect: !l.bluff_detected && Number(l.causal_rigor_score) >= 58,
-    }));
-
-  const brierFromStates = effectiveStates.map((st) => ({
-    confidenceClaimed: Number(st.confidence_claimed),
-    isCorrect: Number(st.p_mastery) >= 0.7,
-  }));
-
-  const brierCalibration = computeBrierCalibration(
-    brierRecords.length >= 2 ? brierRecords : brierFromStates
-  );
-
-  // Agrupamento de alunos para Console de Protagonismo Docente
-  const studentsSummaryMap = new Map<
-    string,
-    {
-      ra: string;
-      studentName: string;
-      avgMastery: number;
-      avgBrier: number;
-      dkAlerts: number;
-      nodesCount: number;
-    }
-  >();
-
-  for (const st of allStudentStates) {
-    const existing = studentsSummaryMap.get(st.ra) ?? {
-      ra: st.ra,
-      studentName: st.student_name,
-      avgMastery: 0,
-      avgBrier: 0,
-      dkAlerts: 0,
-      nodesCount: 0,
-    };
-    existing.avgMastery += Number(st.p_mastery);
-    existing.avgBrier += Number(st.brier_score);
-    if (Number(st.confidence_claimed) - Number(st.p_mastery) >= 0.3) {
-      existing.dkAlerts += 1;
-    }
-    existing.nodesCount += 1;
-    studentsSummaryMap.set(st.ra, existing);
-  }
-
-  const cohortStudents = Array.from(studentsSummaryMap.values()).map((s) => ({
-    ra: s.ra,
-    studentName: s.studentName,
-    avgMastery: Number((s.avgMastery / Math.max(1, s.nodesCount)).toFixed(3)),
-    avgBrier: Number((s.avgBrier / Math.max(1, s.nodesCount)).toFixed(3)),
-    dkAlerts: s.dkAlerts,
-    nodesCount: s.nodesCount,
-  }));
+  const arenaAnalysis = analyzeArenaState(arenaResponses);
 
   return NextResponse.json({
     supabaseConnected,
-    ra,
-    nodes,
-    studentStates: effectiveStates,
-    cohortStudents,
-    cohortMetrics,
-    socraticLogs,
-    submissions,
-    juryFeedback,
-    edagReport,
-    reviewSchedule,
-    brierCalibration,
+    cases,
+    autopsyLogs,
+    proofs,
+    arenaResponses,
+    arenaAnalysis,
+    cohortResults,
+    juryVotes,
   });
 }

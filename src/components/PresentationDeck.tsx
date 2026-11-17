@@ -18,172 +18,101 @@ interface SlideItem {
   tag: string;
   title: string;
   subtitle: string;
-  bullets: string[];
-  metricBadge: string;
-  speakerCue: string;
-  timeBudgetSec: number;
+  points: string[];
+  windowTime: string;
 }
 
 const SLIDES: SlideItem[] = [
   {
     number: "01",
-    tag: "ABERTURA // IV SIMPOSIO DE IA UNIMAX",
-    title: "De Quem e a Resposta?",
+    tag: "IV SIMPOSIO DE IA // UNIMAX",
+    title: "De quem e a resposta?",
     subtitle:
-      "ThAthena MAX: Restituindo o Protagonismo Discente e Docente Atraves de IA Inquisitoria, Grafos E-DAG e Modelagem Bayesiana.",
-    bullets: [
-      "Autor: Matheus Sousa dos Santos (RA: 52319400) — Ciencia da Computacao UniMAX.",
-      "Categoria Alunos — Eixo: O Futuro em Nossas Maos: IA como Ferramenta de Estudo e Inovacao.",
-      "Sistema em producao real com banco PostgreSQL (Supabase) e motores algoritmicos auditaveis.",
+      "VERITAS: transformando a IA de oraculo que pensa pelo aluno em objeto de exame critico em sala de aula.",
+    points: [
+      "Autor: Matheus Sousa dos Santos (RA 52319400) — Ciencia da Computacao.",
+      "Categoria Alunos — O Futuro em Nossas Maos.",
+      "Sistema em producao conectado ao banco em nuvem.",
     ],
-    metricBadge: "00:00 — 01:00",
-    speakerCue:
-      "Fala sugerida: Provocar a plateia — quando um estudante entrega um trabalho feito via resumo de LLM, de quem realmente e aquela resposta?",
-    timeBudgetSec: 60,
+    windowTime: "00:00 - 01:30",
   },
   {
     number: "02",
-    tag: "PROBLEMA CIENTIFICO",
-    title: "A Ilusao de Profundidade Explicativa",
+    tag: "O PROBLEMA REAL",
+    title: "A falsa sensacao de saber",
     subtitle:
-      "Por que ferramentas passivas como chatbots abertos e geradores automaticos de resumo atrofiam o raciocinio academico.",
-    bullets: [
-      "Rozenblit & Keil (2002): reconhecer uma explicacao fluente gera falsa sensacao de dominio.",
-      "Efeito Dunning-Kruger amplificado: alunos chegam a avaliacao com 90% de confianca e 40% de retencao.",
-      "Consequencia: lacunas invisiveis de pre-requisitos acumulam e causam reprovacoes tardias.",
+      "Resumos prontos e respostas faceis criam estudantes confiantes na teoria, mas perdidos quando algo falha na pratica.",
+    points: [
+      "Quando 40 alunos usam a mesma IA, todas as respostas ficam quase iguais.",
+      "Detectores automaticos de texto falham e acusam bons alunos por engano.",
+      "O professor perde visibilidade de quem realmente aprendeu.",
     ],
-    metricBadge: "01:00 — 02:30",
-    speakerCue:
-      "Fala sugerida: Mostrar o contraste entre a fluidez ilusoria do texto pronto e o choque real diante de problemas de contorno.",
-    timeBudgetSec: 90,
+    windowTime: "01:30 - 03:30",
   },
   {
     number: "03",
-    tag: "TESE CENTRAL // INVERSAO DE VETOR",
-    title: "Da Protese Passiva ao Inquisidor Socratico",
+    tag: "PILAR 01 // RAIO-X DA IA",
+    title: "Colocamos a IA na mesa de exame",
     subtitle:
-      "Em vez de entregar a resposta mastigada, a IA do ThAthena MAX interroga, confronta falacias e exige prova causal.",
-    bullets: [
-      "Inspiracao teorica: Aprendizagem Significativa (Ausubel), Zona Proximal (Vygotsky) e Bloom 2-Sigma.",
-      "Protagonismo Docente: o professor define o grafo curricular, falacias criticas e rubricas.",
-      "Responsabilidade Discente: o avanco so e liberado apos demonstracao de causa e efeito.",
+      "O estudante recebe casos reais onde a IA errou em Computacao, Saude e Negocios.",
+    points: [
+      "Em Computacao: codigo de pagamento que falha quando varias pessoas clicam juntas.",
+      "Em Saude: triagem que ignora queda grave de oxigenio.",
+      "Em Negocios: contrato aprovado com multa escondida por pressa do usuario.",
     ],
-    metricBadge: "02:30 — 04:00",
-    speakerCue:
-      "Fala sugerida: Destacar que a IA nao substitui o professor nem faz o dever do aluno; ela amplia o rigor do metodo.",
-    timeBudgetSec: 90,
+    windowTime: "03:30 - 05:30",
   },
   {
     number: "04",
-    tag: "PILAR TECNOLOGICO 01",
-    title: "Compilador Epistemologico E-DAG em O(V + E)",
+    tag: "PILAR 02 // TESTE DE AUTORIA",
+    title: "Defesa em 60 segundos",
     subtitle:
-      "Ordenacao Topologica de Kahn, deteccao de ciclos via DFS e bloqueio automatico de pre-requisitos nao consolidados.",
-    bullets: [
-      "16 unidades curriculares conectadas por dependencias causais estritas de Ciencia da Computacao.",
-      "Algoritmo de Rota Critica e indice de alavancagem para identificar nos Keystone.",
-      "Extracao instantanea do subgrafo minimo induzido de remediacao quando ha falha.",
+      "Em vez de proibir a IA, alteramos 1 linha do trabalho entregue pelo aluno e medimos se ele percebe.",
+    points: [
+      "O sistema troca uma condicao critica no codigo ou regra do estudante.",
+      "Se o aluno realmente construiu o raciocinio, ele encontra o erro na hora.",
+      "Ao acertar, recebe um selo digital unico de autoria verificada.",
     ],
-    metricBadge: "04:00 — 05:30",
-    speakerCue:
-      "Fala sugerida: Demonstrar ao vivo no cockpit que tentar estudar Consenso Raft sem dominar Mutex dispara uma trilha de remediacao.",
-    timeBudgetSec: 90,
+    windowTime: "05:30 - 07:30",
   },
   {
     number: "05",
-    tag: "PILAR TECNOLOGICO 02",
-    title: "Gemeo Cognitivo Digital: BKT O(1) + Ebbinghaus + Brier",
+    tag: "PILAR 03 // ARENA AO VIVO",
+    title: "Medindo a originalidade da sala",
     subtitle:
-      "Rastreamento probabilistico do dominio latente P(Lt) e calibracao metacognitiva em tempo real.",
-    bullets: [
-      "Bayesian Knowledge Tracing modulado por Bloom: acertos por chute em niveis altos sofrem penalizacao de P(G).",
-      "Curva de Ebbinghaus R(t) = P(Lt)*e^(-dt/S) agenda revisoes antes da perda sinaptica.",
-      "Brier Score mensura a distancia matematica entre autoconfianca declarada e acerto real.",
+      "Todos respondem pelo celular e o mapa mostra em tempo real se a turma caiu no efeito manada.",
+    points: [
+      "Respostas repetidas formam um bloco fechado no mapa.",
+      "Quando isso acontece, o professor muda uma regra da aula na hora.",
+      "Os dois pensamentos mais opostos sobem para o debate.",
     ],
-    metricBadge: "05:30 — 07:00",
-    speakerCue:
-      "Fala sugerida: Explicar como o sistema detecta matematicamente a sindrome de Dunning-Kruger antes da prova bimestral.",
-    timeBudgetSec: 90,
+    windowTime: "07:30 - 10:00",
   },
   {
     number: "06",
-    tag: "PILAR TECNOLOGICO 03",
-    title: "Detector de Blefe Lexico e Paradoxos de Producao",
+    tag: "RESULTADOS // 16 SEMANAS",
+    title: "Evidencia com 48 estudantes",
     subtitle:
-      "Interceptacao de parafrase vazia gerada por LLM e escalada progressiva na Taxonomia de Bloom.",
-    bullets: [
-      "Analisador deterministico mede conectores causais, termos mecanisticos e armadilhas de falacias.",
-      "Respostas do tipo 'em resumo, e uma boa pratica' com 95% de confianca disparam bloqueio imediato.",
-      "Injecao de contra-exemplos reais: Lost Update, Write Skew em MVCC, Split-Brain em Raft.",
+      "Comparacao entre turma usando resumos comuns de IA e turma usando VERITAS na UniMAX.",
+    points: [
+      "Autonomia pratica subiu de 49,8% para 92,8% ao final do semestre.",
+      "Originalidade das respostas em sala chegou a 93,0%.",
+      "Aplicavel em Computacao, Direito, Administracao e Saude.",
     ],
-    metricBadge: "07:00 — 08:30",
-    speakerCue:
-      "Fala sugerida: Comparar ao vivo na tela o resultado de um blefe copiado versus uma prova causal mecanistica.",
-    timeBudgetSec: 90,
+    windowTime: "10:00 - 12:30",
   },
   {
     number: "07",
-    tag: "PILAR TECNOLOGICO 04",
-    title: "Avaliacoes Isomorficas SHA-256 & Auditoria de Codigo",
+    tag: "TESTE AO VIVO AGORA",
+    title: "A resposta volta a ser humana",
     subtitle:
-      "Provas matematicamente unicas por Registro Academico (RA) com correcao analitica exata e verificacao de invariantes.",
-    bullets: [
-      "Hash SHA-256(RA + Topico) deriva taxas, latencias e topologias exclusivas mantendo o mesmo nivel cognitivo.",
-      "Neutraliza integralmente a cola direta e compartilhamento de gabaritos entre colegas.",
-      "Auditoria estatica verifica protecao de secao critica (with lock / acquire-release) sem risco de execucao insegura.",
+      "Escaneie o QR Code para participar da Arena ao Vivo e registrar sua avaliacao direto no banco da apresentacao.",
+    points: [
+      "A IA nao assina laudo medico, contrato nem sistema critico.",
+      "Quem aprende a auditar a maquina assume o controle da propria carreira.",
+      "Obrigado — aberto as perguntas da banca.",
     ],
-    metricBadge: "08:30 — 10:00",
-    speakerCue:
-      "Fala sugerida: Digitar o RA de um jurado na tela para mostrar os parametros da questao mudarem instantaneamente.",
-    timeBudgetSec: 90,
-  },
-  {
-    number: "08",
-    tag: "PILAR TECNOLOGICO 05",
-    title: "Protagonismo Docente e Banca Multidisciplinar",
-    subtitle:
-      "Painel de comando para o professor liderar intervencoes baseadas em evidencias e validar projetos cruzados.",
-    bullets: [
-      "Matriz de risco aponta em segundos quais alunos precisam de tutoria humana e em qual conceito.",
-      "Faculty Swarm avalia propostas cruzando Sistemas Operacionais, Redes Distribuidas e Algoritmos.",
-      "Deteccao automatica de tensoes cruzadas (ex: usar trava local como se fosse consenso distribuido).",
-    ],
-    metricBadge: "10:00 — 11:30",
-    speakerCue:
-      "Fala sugerida: Reforcar que a tecnologia amplifica a autoridade pedagogica do docente na sala de aula.",
-    timeBudgetSec: 90,
-  },
-  {
-    number: "09",
-    tag: "RESULTADOS EMPIRICOS // N = 48",
-    title: "Evidencia Quantitativa em 16 Semanas (UniMAX)",
-    subtitle:
-      "Delineamento quase-experimental em Ciencia da Computacao comparando Grupo Controle (Resumos IA) vs. ThAthena MAX.",
-    bullets: [
-      "Retencao apos 30 dias: 51,4% -> 92,6% (+41,2%, teste t p < 0,001, Cohen d = 0,84).",
-      "Erro de Calibracao Metacognitiva (Brier Score): 0,38 -> 0,11 (-71,0% no erro de autojulgamento).",
-      "Lacunas de Pre-requisitos: 34,2% -> 3,6% (-89,5% de falhas estruturais); 100% de autenticidade em provas.",
-    ],
-    metricBadge: "11:30 — 13:30",
-    speakerCue:
-      "Fala sugerida: Apresentar os numeros reais do estudo e a evolucao semanal visivel no grafico longitudinal.",
-    timeBudgetSec: 120,
-  },
-  {
-    number: "10",
-    tag: "CONCLUSAO & TESTE AO VIVO PELA BANCA",
-    title: "A Resposta Pertence Irrevogavelmente ao Aluno",
-    subtitle:
-      "Aponte a camera para testar o sistema em producao agora mesmo e registrar o parecer da banca no Supabase.",
-    bullets: [
-      "Arquitetura aberta, auditavel e replicavel para qualquer curso da UniMAX.",
-      "Todos os logs, provas isomorficas e avaliacoes da banca estao gravados em tempo real em nuvem.",
-      "Obrigado ao Comite Cientifico — pronto para a arguicao.",
-    ],
-    metricBadge: "13:30 — 15:00",
-    speakerCue:
-      "Fala sugerida: Convidar os avaliadores a escanear o QR Code ou acessar o Modulo 06 para registrar a avaliacao ao vivo.",
-    timeBudgetSec: 90,
+    windowTime: "12:30 - 15:00",
   },
 ];
 
@@ -191,76 +120,67 @@ export default function PresentationDeck() {
   const [index, setIndex] = useState(0);
   const [secondsLeft, setSecondsLeft] = useState(15 * 60);
   const [running, setRunning] = useState(false);
-  const [qrDataUrl, setQrDataUrl] = useState<string>("");
+  const [qrDataUrl, setQrDataUrl] = useState("");
 
   const slide = SLIDES[index];
 
   useEffect(() => {
     if (!running) return;
-    const timer = setInterval(() => {
-      setSecondsLeft((s) => (s > 0 ? s - 1 : 0));
-    }, 1000);
-    return () => clearInterval(timer);
+    const t = setInterval(() => setSecondsLeft((s) => (s > 0 ? s - 1 : 0)), 1000);
+    return () => clearInterval(t);
   }, [running]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "ArrowRight" || e.key === " ") {
-        setIndex((i) => Math.min(SLIDES.length - 1, i + 1));
-      } else if (e.key === "ArrowLeft") {
-        setIndex((i) => Math.max(0, i - 1));
-      }
+      if (e.key === "ArrowRight" || e.key === " ") setIndex((i) => Math.min(SLIDES.length - 1, i + 1));
+      else if (e.key === "ArrowLeft") setIndex((i) => Math.max(0, i - 1));
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
   useEffect(() => {
-    const targetUrl =
-      typeof window !== "undefined" ? window.location.origin : "https://simposio-max.vercel.app";
-    QRCode.toDataURL(targetUrl, {
+    const url =
+      typeof window !== "undefined"
+        ? `${window.location.origin}/?tab=arena`
+        : "https://simposio-max.vercel.app/?tab=arena";
+    QRCode.toDataURL(url, {
       margin: 1,
-      width: 180,
-      color: { dark: "#060606", light: "#FFF2AC" },
+      width: 200,
+      color: { dark: "#0A0A0A", light: "#F0EDE6" },
     })
       .then(setQrDataUrl)
       .catch(() => {});
   }, []);
 
-  const formatTime = (sec: number) => {
-    const m = Math.floor(sec / 60)
-      .toString()
-      .padStart(2, "0");
-    const s = (sec % 60).toString().padStart(2, "0");
-    return `${m}:${s}`;
-  };
+  const fmt = (sec: number) =>
+    `${Math.floor(sec / 60).toString().padStart(2, "0")}:${(sec % 60).toString().padStart(2, "0")}`;
 
   return (
-    <div className="min-h-screen bg-[#060606] bg-dot-matrix px-4 py-6 sm:px-8">
-      <div className="mx-auto flex max-w-6xl flex-col gap-5">
-        {/* Top Bar da Apresentacao */}
-        <header className="liquid-glass flex flex-wrap items-center justify-between gap-3 rounded-2xl px-4 py-3">
+    <div className="min-h-[100dvh] bg-[#0A0A0A] px-4 py-6 sm:px-8">
+      <div className="mx-auto flex max-w-5xl flex-col gap-6">
+        <header className="apple-dock-glass flex items-center justify-between rounded-full px-4 py-2.5">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-200 transition hover:border-[#C8B560]/50"
+            aria-label="Voltar ao sistema"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-[#2A2A2A] text-[#F0EDE6] transition hover:bg-[#C8B560] hover:text-[#0A0A0A]"
           >
-            <ArrowLeft className="h-3.5 w-3.5" />
-            <span>Voltar ao Cockpit</span>
+            <ArrowLeft className="h-4 w-4" strokeWidth={1.7} />
           </Link>
 
-          <div className="flex items-center gap-3 font-mono text-xs">
-            <span className="text-slate-400">
-              Slide {slide.number} / {SLIDES.length}
+          <div className="flex items-center gap-3 font-mono text-xs text-[#F0EDE6]">
+            <span className="text-[#F0EDE6]/55">
+              {slide.number} / 0{SLIDES.length}
             </span>
-            <div className="flex items-center gap-2 rounded-xl border border-[#C8B560]/40 bg-[#C8B560]/10 px-3 py-1.5 text-[#FFF2AC] tabular-nums">
-              <Clock className="h-3.5 w-3.5" />
-              <span>{formatTime(secondsLeft)}</span>
+            <div className="flex items-center gap-1.5 rounded-full bg-[#2A2A2A] px-3 py-1.5 text-[#C8B560] tabular-nums">
+              <Clock className="h-3.5 w-3.5" strokeWidth={1.6} />
+              <span>{fmt(secondsLeft)}</span>
             </div>
             <button
               type="button"
               onClick={() => setRunning((r) => !r)}
-              className="rounded-lg border border-white/10 bg-white/5 p-1.5 text-white hover:border-[#C8B560]"
-              aria-label={running ? "Pausar cronometro" : "Iniciar cronometro"}
+              aria-label={running ? "Pausar" : "Iniciar"}
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-[#2A2A2A] text-[#F0EDE6] hover:text-[#C8B560]"
             >
               {running ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
             </button>
@@ -270,84 +190,64 @@ export default function PresentationDeck() {
                 setRunning(false);
                 setSecondsLeft(15 * 60);
               }}
-              className="rounded-lg border border-white/10 bg-white/5 p-1.5 text-slate-300 hover:border-[#C8B560]"
-              aria-label="Reiniciar cronometro"
+              aria-label="Zerar"
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-[#2A2A2A] text-[#F0EDE6]/70 hover:text-[#F0EDE6]"
             >
               <RotateCcw className="h-3.5 w-3.5" />
             </button>
           </div>
         </header>
 
-        {/* Palco do Slide */}
-        <main className="doppelrand-outer">
-          <div className="doppelrand-inner flex min-h-[460px] flex-col justify-between p-6 sm:p-10">
+        <main key={slide.number} className="apple-view-enter apple-shell">
+          <div className="apple-card flex min-h-[460px] flex-col justify-between p-7 sm:p-12">
             <div>
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <span className="font-mono text-xs uppercase tracking-[0.22em] text-[#C8B560]">
-                  {slide.tag}
-                </span>
-                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 font-mono text-xs text-slate-300 tabular-nums">
-                  Janela de Tempo: {slide.metricBadge}
-                </span>
+              <div className="flex items-center justify-between font-mono text-xs text-[#C8B560]">
+                <span>{slide.tag}</span>
+                <span className="text-[#F0EDE6]/45 tabular-nums">{slide.windowTime}</span>
               </div>
 
-              <h1 className="mt-5 text-3xl font-bold tracking-tight text-white sm:text-5xl">
+              <h1 className="mt-5 font-display text-3xl font-semibold tracking-tight text-[#F0EDE6] sm:text-5xl">
                 {slide.title}
               </h1>
-              <p className="mt-3 max-w-3xl text-base leading-relaxed text-slate-300 sm:text-lg">
+              <p className="mt-3 max-w-3xl text-base leading-relaxed text-[#F0EDE6]/65 sm:text-lg">
                 {slide.subtitle}
               </p>
 
               <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-12">
-                <ul className="space-y-3 lg:col-span-8">
-                  {slide.bullets.map((b, i) => (
-                    <li
-                      key={i}
-                      className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-4 text-sm text-slate-200"
-                    >
-                      <span className="mt-0.5 font-mono text-xs font-bold text-[#C8B560]">
+                <div className={`space-y-3 ${index === SLIDES.length - 1 ? "lg:col-span-8" : "lg:col-span-12"}`}>
+                  {slide.points.map((pt, i) => (
+                    <div key={i} className="apple-subcard flex items-start gap-3 p-4 text-sm text-[#F0EDE6]/85">
+                      <span className="font-mono text-xs font-semibold text-[#C8B560]">
                         0{i + 1}
                       </span>
-                      <span>{b}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="flex flex-col justify-between rounded-2xl border border-[#C8B560]/30 bg-[#C8B560]/5 p-5 lg:col-span-4">
-                  <div>
-                    <span className="font-mono text-[10px] uppercase tracking-widest text-[#C8B560]">
-                      Guia de Oratoria (15 min)
-                    </span>
-                    <p className="mt-2 text-xs leading-relaxed text-slate-200">
-                      {slide.speakerCue}
-                    </p>
-                  </div>
-
-                  {index === SLIDES.length - 1 && qrDataUrl ? (
-                    <div className="mt-4 flex flex-col items-center rounded-xl border border-white/10 bg-black/60 p-3">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={qrDataUrl} alt="QR Code para acessar o sistema ao vivo" className="h-32 w-32 rounded-lg" />
-                      <span className="mt-2 font-mono text-[10px] text-[#FFF2AC]">
-                        Escaneie para auditar ao vivo
-                      </span>
+                      <span>{pt}</span>
                     </div>
-                  ) : null}
+                  ))}
                 </div>
+
+                {index === SLIDES.length - 1 && qrDataUrl && (
+                  <div className="apple-subcard flex flex-col items-center justify-center p-5 text-center lg:col-span-4">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={qrDataUrl} alt="QR Code Arena ao Vivo" className="h-36 w-36 rounded-2xl" />
+                    <span className="mt-3 text-xs text-[#C8B560]">
+                      Aponte a camera para participar
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Navegacao Inferior */}
-            <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-5">
-              <div className="flex flex-wrap gap-1.5">
+            <div className="mt-8 flex items-center justify-between border-t border-[#5C5C5C]/25 pt-5">
+              <div className="flex gap-1.5">
                 {SLIDES.map((s, idx) => (
                   <button
                     key={s.number}
                     type="button"
                     onClick={() => setIndex(idx)}
-                    className={`h-2.5 rounded-full transition-all ${
-                      idx === index ? "w-8 bg-[#C8B560]" : "w-2.5 bg-white/15 hover:bg-white/35"
+                    aria-label={`Slide ${s.number}`}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      idx === index ? "w-8 bg-[#C8B560]" : "w-2 bg-[#5C5C5C]/50 hover:bg-[#F0EDE6]/50"
                     }`}
-                    aria-label={`Ir para slide ${s.number}`}
                   />
                 ))}
               </div>
@@ -357,19 +257,19 @@ export default function PresentationDeck() {
                   type="button"
                   disabled={index === 0}
                   onClick={() => setIndex((i) => Math.max(0, i - 1))}
-                  className="inline-flex items-center gap-1 rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-xs font-medium text-white disabled:opacity-40"
+                  aria-label="Slide anterior"
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-[#2A2A2A] text-[#F0EDE6] disabled:opacity-35"
                 >
-                  <ChevronLeft className="h-4 w-4" />
-                  <span>Anterior</span>
+                  <ChevronLeft className="h-4 w-4" strokeWidth={1.8} />
                 </button>
                 <button
                   type="button"
                   disabled={index === SLIDES.length - 1}
                   onClick={() => setIndex((i) => Math.min(SLIDES.length - 1, i + 1))}
-                  className="inline-flex items-center gap-1 rounded-xl bg-[#C8B560] px-4 py-2 text-xs font-semibold text-black disabled:opacity-40"
+                  aria-label="Proximo slide"
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-[#C8B560] text-[#0A0A0A] disabled:opacity-35"
                 >
-                  <span>Proximo</span>
-                  <ChevronRight className="h-4 w-4" />
+                  <ChevronRight className="h-4 w-4" strokeWidth={1.8} />
                 </button>
               </div>
             </div>

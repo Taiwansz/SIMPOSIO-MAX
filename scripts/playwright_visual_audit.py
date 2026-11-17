@@ -1,15 +1,11 @@
 #!/usr/bin/env python3
 """
-Auditoria visual e funcional via Playwright em dual-viewport (1440x900 Desktop e 390x844 Mobile).
-Captura screenshots reais em docs/screenshots/ e valida:
-- Zero erros de console e zero excecoes de pagina
-- Zero overflow horizontal em desktop e mobile
-- Presenca real dos paineis interativos e rota /apresentacao
+Auditoria visual dual-viewport (1440x900 Desktop e 390x844 Mobile) para VERITAS.
+Verifica zero erros de console, zero overflow horizontal e captura todas as telas.
 """
 
 import os
 import subprocess
-import sys
 import time
 import urllib.request
 from pathlib import Path
@@ -33,7 +29,7 @@ def wait_for_server(url: str, timeout: float = 35.0) -> None:
 
 
 def main() -> None:
-    port = 3194
+    port = 3198
     base_url = f"http://127.0.0.1:{port}"
     env = os.environ.copy()
     env["PORT"] = str(port)
@@ -49,8 +45,6 @@ def main() -> None:
 
     try:
         wait_for_server(base_url)
-        print("[AUDIT] Servidor Next.js ativo para auditoria Playwright.")
-
         console_errors: list[str] = []
         page_errors: list[str] = []
 
@@ -60,62 +54,55 @@ def main() -> None:
             except Exception:
                 browser = p.chromium.launch(
                     headless=True,
-                    args=["--disable-gpu", "--disable-software-rasterizer", "--no-sandbox"],
+                    args=["--disable-gpu", "--no-sandbox"],
                 )
 
-            # 1. Desktop 1440x900
+            # Desktop 1440x900
             ctx = browser.new_context(viewport={"width": 1440, "height": 900})
             page = ctx.new_page()
             page.on("console", lambda msg: console_errors.append(msg.text) if msg.type == "error" else None)
             page.on("pageerror", lambda err: page_errors.append(str(err)))
 
             page.goto(base_url, wait_until="networkidle")
-            page.wait_for_timeout(1200)
+            page.wait_for_timeout(1000)
+            if page.evaluate("document.documentElement.scrollWidth > window.innerWidth"):
+                raise AssertionError("Overflow horizontal detectado no Desktop 1440x900.")
+            page.screenshot(path=str(SCREENSHOT_DIR / "01_desktop_home.png"))
 
-            overflow_desktop = page.evaluate("document.documentElement.scrollWidth > window.innerWidth")
-            if overflow_desktop:
-                raise AssertionError("Overflow horizontal detectado no viewport Desktop 1440x900.")
-
-            page.screenshot(path=str(SCREENSHOT_DIR / "01_desktop_hero_edag.png"))
-
-            # Navegar por todas as abas e capturar o workspace em foco completo
-            tabs = [
-                ("01. Cartografia E-DAG", "01b_desktop_edag_workspace.png"),
-                ("02. Inquisidor Socratico", "02_desktop_socratic_inquisitor.png"),
-                ("03. Gemeo BKT & Brier", "03_desktop_cognitive_twin.png"),
-                ("04. Prova Isomorfica", "04_desktop_isomorphic_exam.png"),
-                ("05. Protagonismo Docente", "05_desktop_faculty_console.png"),
-                ("06. Edital & Banca", "06_desktop_edital_dossier.png"),
-            ]
-            for label, filename in tabs:
-                btn = page.get_by_role("button", name=label)
-                btn.click()
-                page.locator("#workspace").scroll_into_view_if_needed()
+            desktop_nav = page.locator("nav[aria-label='Navegacao principal']")
+            for label, fname in [
+                ("Raio-X da IA", "02_desktop_autopsy.png"),
+                ("Teste de Autoria", "03_desktop_mutation.png"),
+                ("Arena ao Vivo", "04_desktop_arena.png"),
+                ("Resultados", "05_desktop_faculty.png"),
+            ]:
+                desktop_nav.get_by_role("button", name=label).click()
                 page.wait_for_timeout(700)
-                page.screenshot(path=str(SCREENSHOT_DIR / filename))
+                page.screenshot(path=str(SCREENSHOT_DIR / fname))
 
-            # Rota de Apresentacao 15 min
             page.goto(f"{base_url}/apresentacao", wait_until="networkidle")
-            page.wait_for_timeout(800)
-            page.screenshot(path=str(SCREENSHOT_DIR / "07_desktop_presentation_15min.png"))
+            page.wait_for_timeout(700)
+            page.screenshot(path=str(SCREENSHOT_DIR / "06_desktop_presentation.png"))
 
-            # 2. Mobile 390x844
+            # Mobile 390x844
             page.set_viewport_size({"width": 390, "height": 844})
             page.goto(base_url, wait_until="networkidle")
-            page.wait_for_timeout(1000)
-            overflow_mobile = page.evaluate("document.documentElement.scrollWidth > window.innerWidth")
-            if overflow_mobile:
-                raise AssertionError("Overflow horizontal detectado no viewport Mobile 390x844.")
-            page.screenshot(path=str(SCREENSHOT_DIR / "08_mobile_390x844.png"))
+            page.wait_for_timeout(900)
+            if page.evaluate("document.documentElement.scrollWidth > window.innerWidth"):
+                raise AssertionError("Overflow horizontal detectado no Mobile 390x844.")
+            page.screenshot(path=str(SCREENSHOT_DIR / "07_mobile_home.png"))
+
+            mobile_nav = page.locator("nav[aria-label='Navegacao mobile']")
+            mobile_nav.get_by_role("button", name="Arena ao Vivo").click()
+            page.wait_for_timeout(700)
+            page.screenshot(path=str(SCREENSHOT_DIR / "08_mobile_arena.png"))
 
             browser.close()
 
         if console_errors or page_errors:
-            raise AssertionError(
-                f"Erros detectados no runtime: console={console_errors}, page={page_errors}"
-            )
+            raise AssertionError(f"Erros detectados: console={console_errors}, page={page_errors}")
 
-        print(f"[AUDIT OK] 8 screenshots salvos em {SCREENSHOT_DIR}; 0 erros console; 0 overflow.")
+        print(f"[AUDIT OK] 8 screenshots VERITAS salvos em {SCREENSHOT_DIR}; 0 erros; 0 overflow.")
     finally:
         proc.terminate()
         try:
