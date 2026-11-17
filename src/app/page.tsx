@@ -10,22 +10,94 @@ import {
   ChevronDown,
   Clock,
   Compass,
+  Copy,
   GraduationCap,
-  HelpCircle,
-  Layers,
   LayoutDashboard,
   LogIn,
   Menu,
   MessageSquare,
   School,
+  Share2,
   ShieldCheck,
-  Sparkle,
+  Sparkles,
   Target,
   TrendingUp,
   UserCheck,
   Users,
   X,
 } from "lucide-react";
+
+/* ==================================================================== */
+/* COMPONENTES DE RABISCOS E DETALHES MANUSCRITOS (ESTÉTICA THINKA)     */
+/* ==================================================================== */
+
+function ScribbleUnderline({ className = "w-full h-3" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 200 12"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M2 9.5C45 2.5 90 10.5 130 5.5C158 2 182 8 198 4.5"
+        stroke="#C8B560"
+        strokeWidth="3.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function ScribbleArrow({ className = "w-10 h-10" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 54 44"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      aria-hidden="true"
+    >
+      <path
+        d="M6 38C18 39 34 35 43 23C47 18 49 11 48 5"
+        stroke="#C8B560"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M38 11C41 7 47 4 48 5C48 8 46 16 44 20"
+        stroke="#C8B560"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function ScribbleCircle({ className = "w-12 h-12" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 60 60"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      aria-hidden="true"
+    >
+      <path
+        d="M30 6C16 6 8 18 8 32C8 46 20 54 34 54C48 54 54 42 54 28C54 14 42 6 26 8"
+        stroke="#C8B560"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeDasharray="160"
+        opacity="0.8"
+      />
+    </svg>
+  );
+}
 
 export default function LandingPage() {
   const [currentUser, setCurrentUser] = useState<{
@@ -34,11 +106,12 @@ export default function LandingPage() {
   } | null>(null);
 
   const [activeMockupTab, setActiveMockupTab] = useState<
-    "caderno" | "turmas" | "progresso" | "copiloto"
+    "caderno" | "turmas" | "copiloto" | "progresso"
   >("caderno");
 
   const [faqOpen, setFaqOpen] = useState<number | null>(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [copiedCode, setCopiedCode] = useState(false);
 
   useEffect(() => {
     fetch("/api/state", { cache: "no-store" })
@@ -58,6 +131,12 @@ export default function LandingPage() {
       .catch(() => {});
   }, []);
 
+  const handleCopyCode = () => {
+    navigator.clipboard?.writeText("THK-COMP-4B");
+    setCopiedCode(true);
+    setTimeout(() => setCopiedCode(false), 2000);
+  };
+
   const toggleFaq = (index: number) => {
     setFaqOpen((prev) => (prev === index ? null : index));
   };
@@ -65,11 +144,11 @@ export default function LandingPage() {
   return (
     <div className="min-h-[100dvh] bg-[#0A0A0A] text-[#F0EDE6] antialiased selection:bg-[#C8B560]/20 selection:text-[#F0EDE6]">
       {/* ============================================================ */}
-      {/* 1. TOPBAR INSTITUCIONAL COM LOGO MANUSCRITO DA THINKA         */}
+      {/* 1. TOPBAR INSTITUCIONAL                                      */}
       {/* ============================================================ */}
       <header className="sticky top-0 z-50 border-b border-[#2A2A2A] bg-[#0A0A0A]/90 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          {/* Logotipo Thinka com tipografia manuscrita e monograma */}
+          {/* Logo Thinka Manuscrito */}
           <Link href="/" className="flex items-center gap-3 group">
             <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#2A2A2A] font-display text-sm font-bold text-[#C8B560] shadow-sm ring-1 ring-[#F0EDE6]/10 transition group-hover:bg-[#C8B560] group-hover:text-[#0A0A0A]">
               T
@@ -91,13 +170,16 @@ export default function LandingPage() {
               Recursos
             </a>
             <a href="#demonstracao" className="transition hover:text-[#C8B560]">
-              Como Funciona
+              Demonstração
             </a>
             <a href="#alunos" className="transition hover:text-[#C8B560]">
               Para Alunos
             </a>
             <a href="#professores" className="transition hover:text-[#C8B560]">
               Para Professores
+            </a>
+            <a href="#como-funciona" className="transition hover:text-[#C8B560]">
+              Como Funciona
             </a>
             <a href="#diferenciais" className="transition hover:text-[#C8B560]">
               Diferenciais
@@ -171,14 +253,21 @@ export default function LandingPage() {
                 onClick={() => setMobileMenuOpen(false)}
                 className="py-1 text-[#F0EDE6]/80 hover:text-[#C8B560]"
               >
-                Experiência do Aluno
+                Para Estudantes
               </a>
               <a
                 href="#professores"
                 onClick={() => setMobileMenuOpen(false)}
                 className="py-1 text-[#F0EDE6]/80 hover:text-[#C8B560]"
               >
-                Experiência do Professor
+                Para Docentes
+              </a>
+              <a
+                href="#como-funciona"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-1 text-[#F0EDE6]/80 hover:text-[#C8B560]"
+              >
+                Como Funciona
               </a>
               <a
                 href="#diferenciais"
@@ -214,32 +303,39 @@ export default function LandingPage() {
       </header>
 
       {/* ============================================================ */}
-      {/* 2. PRIMEIRA DOBRA (HERO SECTION) EDUCACIONAL & MEMORÁVEL      */}
+      {/* 2. PRIMEIRA DOBRA (HERO SECTION) REFINADA & IMPACTANTE        */}
       {/* ============================================================ */}
-      <section className="relative mx-auto max-w-6xl px-6 pt-16 pb-20 sm:pt-24 sm:pb-28">
+      <section className="relative mx-auto max-w-6xl px-6 pt-16 pb-16 sm:pt-24 sm:pb-24">
         <div className="mx-auto max-w-3xl text-center">
-          {/* Eyebrow de Boas-Vindas */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#2A2A2A] bg-[#141414] px-4 py-1.5 text-xs text-[#C8B560]">
+          {/* Eyebrow com detalhe manuscrito */}
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#2A2A2A] bg-[#141414] px-4 py-1.5 text-xs text-[#C8B560] shadow-sm">
             <span className="h-2 w-2 rounded-full bg-[#C8B560]" />
-            <span className="font-medium">
-              Plataforma Educacional para Alunos e Professores
+            <span className="font-medium">Plataforma Educacional Inteligente</span>
+            <span className="text-[#5C5C5C]">•</span>
+            <span className="font-logo text-sm font-bold text-[#F0EDE6]">
+              para quem estuda e ensina
             </span>
           </div>
 
-          {/* Título Principal Convidativo e Marcante */}
-          <h1 className="mt-6 font-display text-4xl font-bold tracking-tight text-[#F0EDE6] sm:text-6xl sm:leading-[1.1]">
-            Onde o estudo ganha clareza e ensinar volta a ser inspirador.
+          {/* Título Principal com Rabisco Manuscrito */}
+          <h1 className="mt-6 font-display text-4xl font-bold tracking-tight text-[#F0EDE6] sm:text-6xl sm:leading-[1.12]">
+            Onde o estudo ganha{" "}
+            <span className="relative inline-block">
+              <span className="text-[#C8B560]">clareza</span>
+              <ScribbleUnderline className="absolute -bottom-2 left-0 w-full text-[#C8B560]" />
+            </span>{" "}
+            e ensinar volta a ser inspirador.
           </h1>
 
-          {/* Subtítulo Persuasivo */}
-          <p className="mt-6 text-base leading-relaxed text-[#F0EDE6]/70 sm:text-lg">
+          {/* Subtítulo Equilibrado */}
+          <p className="mt-7 text-base leading-relaxed text-[#F0EDE6]/70 sm:text-lg sm:leading-relaxed">
             A Thinka reúne a rotina acadêmica em um espaço leve e organizado: cadernos por
             disciplina, radar de provas com contagem regressiva, gestão de turmas com código de
-            convite e orientação de estudos que desafia você a pensar de verdade.
+            convite e orientação de estudos que estimula o raciocínio com autonomia.
           </p>
 
-          {/* Ações Primárias */}
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+          {/* Ações Primárias e Anotação Manuscrita */}
+          <div className="relative mt-10 flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/cadastro"
               className="flex items-center gap-2 rounded-xl bg-[#C8B560] px-6 py-3.5 text-sm font-semibold text-[#0A0A0A] shadow-md transition hover:bg-[#F0EDE6]"
@@ -255,310 +351,369 @@ export default function LandingPage() {
               <LogIn className="h-4 w-4 text-[#C8B560]" />
               <span>Acessar plataforma</span>
             </Link>
+
+            {/* Setinha manuscrita de incentivo */}
+            <div className="hidden lg:flex absolute -right-28 top-1 items-center gap-2 text-left">
+              <ScribbleArrow className="h-8 w-8 text-[#C8B560] rotate-12" />
+              <span className="font-logo text-sm font-bold text-[#C8B560] leading-tight">
+                crie em 1 min<br />sem taxas
+              </span>
+            </div>
           </div>
 
-          {/* Três micro-vantagens com check discreto */}
+          {/* Selos de Benefício Rápido */}
           <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-xs text-[#5C5C5C]">
             <span className="flex items-center gap-1.5">
               <CheckCircle2 className="h-3.5 w-3.5 text-[#C8B560]" />
-              <span>Sem cartões ou taxas ocultas</span>
+              <span>Ambiente para alunos e turmas</span>
             </span>
             <span className="flex items-center gap-1.5">
               <CheckCircle2 className="h-3.5 w-3.5 text-[#C8B560]" />
-              <span>Ambiente individual e de turma</span>
+              <span>Radar de provas integrado</span>
             </span>
             <span className="flex items-center gap-1.5">
               <CheckCircle2 className="h-3.5 w-3.5 text-[#C8B560]" />
-              <span>Acesso rápido via celular e desktop</span>
+              <span>Funciona no celular e computador</span>
             </span>
           </div>
         </div>
 
         {/* ============================================================ */}
-        {/* 3. DEMONSTRAÇÃO VISUAL EM FUNCIONAMENTO (MOCKUP INTERATIVO)   */}
+        {/* 3. MOCKUP DO PRODUTO REFINADO (COMPONENTES MAIORES E LIMPOS)  */}
         {/* ============================================================ */}
-        <div id="demonstracao" className="mt-16 rounded-2xl border border-[#2A2A2A] bg-[#141414] p-1.5 shadow-2xl">
-          {/* Barra superior de janela de aplicativo */}
-          <div className="flex flex-col justify-between gap-3 border-b border-[#2A2A2A] bg-[#0E0E0E] px-5 py-3.5 sm:flex-row sm:items-center rounded-t-xl">
+        <div
+          id="demonstracao"
+          className="mt-14 rounded-2xl border border-[#2A2A2A] bg-[#141414] p-1.5 shadow-2xl"
+        >
+          {/* Header de Aplicativo macOS com Abas Grandes e Limpas */}
+          <div className="flex flex-col justify-between gap-3 border-b border-[#2A2A2A] bg-[#0E0E0E] px-5 py-4 sm:flex-row sm:items-center rounded-t-xl">
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-1.5">
                 <span className="h-3 w-3 rounded-full bg-[#2A2A2A]" />
                 <span className="h-3 w-3 rounded-full bg-[#2A2A2A]" />
                 <span className="h-3 w-3 rounded-full bg-[#2A2A2A]" />
               </div>
-              <span className="text-xs font-medium text-[#5C5C5C]">
-                Plataforma Thinka • Demonstração em Tempo Real
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="font-logo text-base font-bold text-[#F0EDE6]">thinka</span>
+                <span className="rounded bg-[#2A2A2A] px-2 py-0.5 text-[10px] font-mono uppercase text-[#C8B560]">
+                  app web
+                </span>
+              </div>
             </div>
 
-            {/* Abas do Mockup para o visitante explorar */}
-            <div className="flex flex-wrap items-center gap-1.5 font-mono text-xs">
+            {/* 4 Abas Principais em Tamanho Confortável */}
+            <div className="flex flex-wrap items-center gap-2">
               <button
                 type="button"
                 onClick={() => setActiveMockupTab("caderno")}
-                className={`rounded-lg px-3 py-1.5 transition ${
+                className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-medium transition ${
                   activeMockupTab === "caderno"
-                    ? "bg-[#C8B560] font-semibold text-[#0A0A0A]"
-                    : "bg-[#1E1E1E] text-[#F0EDE6]/60 hover:text-[#F0EDE6]"
+                    ? "bg-[#C8B560] font-semibold text-[#0A0A0A] shadow-sm"
+                    : "bg-[#1A1A1A] text-[#F0EDE6]/60 hover:text-[#F0EDE6]"
                 }`}
               >
-                Caderno de Estudos
+                <BookOpen className="h-3.5 w-3.5" />
+                <span>Caderno &amp; Radar</span>
               </button>
+
               <button
                 type="button"
                 onClick={() => setActiveMockupTab("turmas")}
-                className={`rounded-lg px-3 py-1.5 transition ${
+                className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-medium transition ${
                   activeMockupTab === "turmas"
-                    ? "bg-[#C8B560] font-semibold text-[#0A0A0A]"
-                    : "bg-[#1E1E1E] text-[#F0EDE6]/60 hover:text-[#F0EDE6]"
+                    ? "bg-[#C8B560] font-semibold text-[#0A0A0A] shadow-sm"
+                    : "bg-[#1A1A1A] text-[#F0EDE6]/60 hover:text-[#F0EDE6]"
                 }`}
               >
-                Turmas & Docentes
+                <Users className="h-3.5 w-3.5" />
+                <span>Gestão de Turmas</span>
               </button>
-              <button
-                type="button"
-                onClick={() => setActiveMockupTab("progresso")}
-                className={`rounded-lg px-3 py-1.5 transition ${
-                  activeMockupTab === "progresso"
-                    ? "bg-[#C8B560] font-semibold text-[#0A0A0A]"
-                    : "bg-[#1E1E1E] text-[#F0EDE6]/60 hover:text-[#F0EDE6]"
-                }`}
-              >
-                Radar de Avaliações
-              </button>
+
               <button
                 type="button"
                 onClick={() => setActiveMockupTab("copiloto")}
-                className={`rounded-lg px-3 py-1.5 transition ${
+                className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-medium transition ${
                   activeMockupTab === "copiloto"
-                    ? "bg-[#C8B560] font-semibold text-[#0A0A0A]"
-                    : "bg-[#1E1E1E] text-[#F0EDE6]/60 hover:text-[#F0EDE6]"
+                    ? "bg-[#C8B560] font-semibold text-[#0A0A0A] shadow-sm"
+                    : "bg-[#1A1A1A] text-[#F0EDE6]/60 hover:text-[#F0EDE6]"
                 }`}
               >
-                Copiloto de Dúvidas
+                <Compass className="h-3.5 w-3.5" />
+                <span>Copiloto de Dúvidas</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveMockupTab("progresso")}
+                className={`flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-medium transition ${
+                  activeMockupTab === "progresso"
+                    ? "bg-[#C8B560] font-semibold text-[#0A0A0A] shadow-sm"
+                    : "bg-[#1A1A1A] text-[#F0EDE6]/60 hover:text-[#F0EDE6]"
+                }`}
+              >
+                <TrendingUp className="h-3.5 w-3.5" />
+                <span>Meu Progresso</span>
               </button>
             </div>
           </div>
 
-          {/* Conteúdo Dinâmico do Mockup */}
-          <div className="p-6 sm:p-8 bg-[#0A0A0A] rounded-b-xl min-h-[380px] flex flex-col justify-center">
+          {/* Palco do Mockup com Componentes Maiores e Alta Legibilidade */}
+          <div className="p-6 sm:p-10 bg-[#0A0A0A] rounded-b-xl min-h-[440px] flex flex-col justify-center">
+            {/* ABA 1: CADERNO & RADAR */}
             {activeMockupTab === "caderno" && (
               <div className="space-y-6">
-                <div className="flex flex-col justify-between gap-4 border-b border-[#2A2A2A] pb-4 sm:flex-row sm:items-center">
+                <div className="flex flex-col justify-between gap-4 border-b border-[#2A2A2A] pb-5 sm:flex-row sm:items-center">
                   <div>
                     <span className="font-mono text-xs uppercase text-[#C8B560]">
-                      Disciplina Ativa • Cálculo Diferencial e Integral
+                      Disciplina Selecionada
                     </span>
-                    <h3 className="mt-1 font-display text-xl font-bold text-[#F0EDE6]">
-                      Anotações de Aula: Regra da Cadeia e Limites Fundamentais
+                    <h3 className="mt-1 font-display text-2xl font-bold text-[#F0EDE6]">
+                      Cálculo Diferencial e Integral I
                     </h3>
                   </div>
-                  <div className="inline-flex items-center gap-2 rounded-xl bg-[#2A2A2A] px-3.5 py-1.5 text-xs text-[#C8B560]">
-                    <Clock className="h-3.5 w-3.5" />
-                    <span>Prova 01 em 4 dias</span>
+
+                  {/* Badge Grande de Contagem Regressiva */}
+                  <div className="flex items-center gap-3 rounded-2xl border border-[#C8B560]/30 bg-[#C8B560]/10 px-5 py-2.5">
+                    <Clock className="h-5 w-5 text-[#C8B560]" />
+                    <div>
+                      <span className="font-mono text-xs font-bold text-[#C8B560]">
+                        PROVA P1 EM 4 DIAS
+                      </span>
+                      <p className="text-[11px] text-[#F0EDE6]/60">85% do conteúdo revisado</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                  {/* Bloco Central: Anotação Ampla */}
+                  <div className="lg:col-span-2 rounded-2xl border border-[#2A2A2A] bg-[#141414] p-6">
+                    <div className="flex items-center justify-between border-b border-[#2A2A2A] pb-3">
+                      <span className="font-display text-base font-semibold text-[#F0EDE6]">
+                        Regra da Cadeia &amp; Derivadas Compostas
+                      </span>
+                      <span className="rounded-full bg-[#2A2A2A] px-3 py-1 font-mono text-[11px] text-[#C8B560]">
+                        Aula 14
+                      </span>
+                    </div>
+
+                    <p className="mt-4 text-sm leading-relaxed text-[#F0EDE6]/80">
+                      A derivada da função composta f(g(x)) é calculada multiplicando a derivada da
+                      função externa pela derivada da função interna: f&apos;(g(x)) · g&apos;(x).
+                    </p>
+
+                    <div className="mt-5 flex flex-wrap items-center gap-3">
+                      <span className="rounded-lg bg-[#0A0A0A] border border-[#2A2A2A] px-3 py-1.5 text-xs text-[#F0EDE6]">
+                        Exemplo Prático: y = sin(x² + 4) → y&apos; = 2x · cos(x² + 4)
+                      </span>
+                      <span className="font-logo text-base text-[#C8B560]">
+                        revisado no caderno!
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Bloco Lateral: Ação do Copiloto */}
+                  <div className="rounded-2xl border border-[#2A2A2A] bg-[#141414] p-6 flex flex-col justify-between">
+                    <div>
+                      <span className="font-mono text-xs uppercase text-[#C8B560]">
+                        Radar de Preparação
+                      </span>
+                      <h4 className="mt-1 font-display text-base font-semibold text-[#F0EDE6]">
+                        Prontidão para o Exame
+                      </h4>
+                      <p className="mt-2 text-xs leading-relaxed text-[#5C5C5C]">
+                        O copiloto identificou que sua base de limites está sólida, restando apenas
+                        reforçar derivadas exponenciais.
+                      </p>
+                    </div>
+
+                    <div className="mt-4 pt-4 border-t border-[#2A2A2A]">
+                      <button
+                        type="button"
+                        onClick={() => setActiveMockupTab("copiloto")}
+                        className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#C8B560] py-2.5 text-xs font-semibold text-[#0A0A0A] transition hover:bg-[#F0EDE6]"
+                      >
+                        <Compass className="h-4 w-4" />
+                        <span>Abrir Simulado do Copiloto</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ABA 2: TURMAS & DOCENTES */}
+            {activeMockupTab === "turmas" && (
+              <div className="space-y-6">
+                <div className="flex flex-col justify-between gap-4 border-b border-[#2A2A2A] pb-5 sm:flex-row sm:items-center">
+                  <div>
+                    <span className="font-mono text-xs uppercase text-[#C8B560]">
+                      Espaço da Disciplina
+                    </span>
+                    <h3 className="mt-1 font-display text-2xl font-bold text-[#F0EDE6]">
+                      Ciência da Computação 2026 • Noturno
+                    </h3>
+                  </div>
+
+                  {/* Código da Turma em Destaque */}
+                  <div className="flex items-center gap-3 rounded-2xl border border-[#2A2A2A] bg-[#141414] px-4 py-2">
+                    <div className="text-right">
+                      <span className="text-[10px] text-[#5C5C5C] uppercase block">
+                        Código de Convite
+                      </span>
+                      <span className="font-mono text-sm font-bold text-[#C8B560]">
+                        THK-COMP-4B
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleCopyCode}
+                      className="rounded-lg bg-[#2A2A2A] p-2 text-[#F0EDE6] hover:text-[#C8B560] transition"
+                      title="Copiar código da turma"
+                    >
+                      <Copy className="h-4 w-4" />
+                    </button>
+                    {copiedCode && (
+                      <span className="font-logo text-xs text-[#10B981]">Copiado!</span>
+                    )}
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-                  <div className="md:col-span-2 rounded-xl border border-[#2A2A2A] bg-[#141414] p-5">
-                    <span className="text-xs font-semibold text-[#5C5C5C] uppercase tracking-wider">
-                      Resumo Estruturado do Estudante
+                  <div className="rounded-2xl border border-[#2A2A2A] bg-[#141414] p-5">
+                    <span className="text-xs font-mono text-[#5C5C5C] uppercase">
+                      Alunos Matriculados
                     </span>
-                    <p className="mt-3 text-sm leading-relaxed text-[#F0EDE6]/80">
-                      Na aula de hoje o professor demonstrou que a derivada da função composta
-                      f(g(x)) é igual a f&apos;(g(x)) vezes g&apos;(x). Aplicamos o método para funções
-                      trigonométricas e calculamos limites indeterminados do tipo 0/0.
-                    </p>
-                    <div className="mt-4 flex flex-wrap gap-2 text-xs">
-                      <span className="rounded-md bg-[#2A2A2A] px-2.5 py-1 text-[#F0EDE6]">
-                        #calculo1
-                      </span>
-                      <span className="rounded-md bg-[#2A2A2A] px-2.5 py-1 text-[#F0EDE6]">
-                        #derivadas
-                      </span>
-                      <span className="rounded-md bg-[#2A2A2A] px-2.5 py-1 text-[#C8B560]">
-                        #revisar-para-prova
-                      </span>
+                    <div className="mt-2 font-display text-3xl font-bold text-[#F0EDE6]">
+                      38 Alunos
+                    </div>
+                    <div className="mt-2 flex items-center gap-1.5 text-xs text-[#10B981]">
+                      <CheckCircle2 className="h-3.5 w-3.5" />
+                      <span>Todas as solicitações aprovadas</span>
                     </div>
                   </div>
 
-                  <div className="rounded-xl border border-[#2A2A2A] bg-[#141414] p-5">
-                    <span className="text-xs font-semibold text-[#C8B560] uppercase tracking-wider">
-                      Diagnóstico do Copiloto
+                  <div className="rounded-2xl border border-[#2A2A2A] bg-[#141414] p-5">
+                    <span className="text-xs font-mono text-[#5C5C5C] uppercase">
+                      Mural Oficial
                     </span>
-                    <div className="mt-3 space-y-3 text-xs text-[#F0EDE6]/75">
-                      <div className="border-l-2 border-[#10B981] pl-3">
-                        <span className="font-semibold text-[#10B981]">Ponto Forte:</span>
-                        <p className="mt-0.5 text-[11px] text-[#5C5C5C]">
-                          Compreensão da fórmula geral da regra da cadeia bem consolidada.
-                        </p>
-                      </div>
-                      <div className="border-l-2 border-[#C8B560] pl-3">
-                        <span className="font-semibold text-[#C8B560]">Atenção:</span>
-                        <p className="mt-0.5 text-[11px] text-[#5C5C5C]">
-                          Falta praticar a composição quando há funções exponenciais mistas.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeMockupTab === "turmas" && (
-              <div className="space-y-6">
-                <div className="flex flex-col justify-between gap-4 border-b border-[#2A2A2A] pb-4 sm:flex-row sm:items-center">
-                  <div>
-                    <span className="font-mono text-xs uppercase text-[#C8B560]">
-                      Visão do Docente • Gestão Acadêmica
-                    </span>
-                    <h3 className="mt-1 font-display text-xl font-bold text-[#F0EDE6]">
-                      Turma CC-2026 • Ciência da Computação
-                    </h3>
-                  </div>
-                  <div className="inline-flex items-center gap-2 rounded-xl bg-[#1E1E1E] px-3.5 py-1.5 font-mono text-xs text-[#F0EDE6]">
-                    <span>Código de Acesso:</span>
-                    <span className="font-bold text-[#C8B560]">THK-COMP-4B</span>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                  <div className="rounded-xl border border-[#2A2A2A] bg-[#141414] p-4">
-                    <div className="flex items-center justify-between text-xs text-[#5C5C5C]">
-                      <span>Alunos Vinculados</span>
-                      <Users className="h-4 w-4 text-[#C8B560]" />
-                    </div>
-                    <div className="mt-2 font-display text-2xl font-bold text-[#F0EDE6]">
-                      38 matriculados
-                    </div>
-                    <div className="mt-1 text-xs text-[#10B981]">
-                      3 solicitações aprovadas hoje
-                    </div>
-                  </div>
-
-                  <div className="rounded-xl border border-[#2A2A2A] bg-[#141414] p-4">
-                    <div className="flex items-center justify-between text-xs text-[#5C5C5C]">
-                      <span>Mural de Avisos</span>
-                      <MessageSquare className="h-4 w-4 text-[#C8B560]" />
-                    </div>
                     <div className="mt-2 font-display text-base font-semibold text-[#F0EDE6]">
-                      Entrega do Projeto Prático
+                      Trabalho de Estruturas
                     </div>
-                    <div className="mt-1 text-xs text-[#5C5C5C]">
+                    <p className="mt-1 text-xs text-[#5C5C5C]">
                       Prazo final: 24 de Novembro às 23h59
-                    </div>
+                    </p>
                   </div>
 
-                  <div className="rounded-xl border border-[#2A2A2A] bg-[#141414] p-4">
-                    <div className="flex items-center justify-between text-xs text-[#5C5C5C]">
-                      <span>Turno e Sala</span>
-                      <School className="h-4 w-4 text-[#C8B560]" />
-                    </div>
-                    <div className="mt-2 font-display text-base font-semibold text-[#F0EDE6]">
-                      Noturno • Lab 04
-                    </div>
-                    <div className="mt-1 text-xs text-[#5C5C5C]">
-                      Aulas às terças e quintas-feiras
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeMockupTab === "progresso" && (
-              <div className="space-y-6">
-                <div className="flex flex-col justify-between gap-4 border-b border-[#2A2A2A] pb-4 sm:flex-row sm:items-center">
-                  <div>
-                    <span className="font-mono text-xs uppercase text-[#C8B560]">
-                      Cronograma Acadêmico Inteligente
+                  <div className="rounded-2xl border border-[#2A2A2A] bg-[#141414] p-5">
+                    <span className="text-xs font-mono text-[#5C5C5C] uppercase">
+                      Horário &amp; Sala
                     </span>
-                    <h3 className="mt-1 font-display text-xl font-bold text-[#F0EDE6]">
-                      Radar de Avaliações e Entregas do Semestre
-                    </h3>
-                  </div>
-                  <span className="text-xs text-[#5C5C5C]">
-                    3 avaliações nos próximos 15 dias
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                  <div className="rounded-xl border border-[#2A2A2A] bg-[#141414] p-4">
-                    <div className="flex items-center justify-between">
-                      <span className="rounded bg-[#C8B560]/10 px-2 py-0.5 font-mono text-[11px] font-semibold text-[#C8B560]">
-                        EM 4 DIAS
-                      </span>
-                      <Calendar className="h-3.5 w-3.5 text-[#5C5C5C]" />
+                    <div className="mt-2 font-display text-base font-semibold text-[#F0EDE6]">
+                      Terças &amp; Quintas
                     </div>
-                    <h4 className="mt-3 font-display text-sm font-semibold text-[#F0EDE6]">
-                      Prova de Cálculo I
-                    </h4>
                     <p className="mt-1 text-xs text-[#5C5C5C]">
-                      Conteúdo: Limites, derivadas e aplicações.
-                    </p>
-                  </div>
-
-                  <div className="rounded-xl border border-[#2A2A2A] bg-[#141414] p-4">
-                    <div className="flex items-center justify-between">
-                      <span className="rounded bg-[#1E1E1E] px-2 py-0.5 font-mono text-[11px] font-semibold text-[#F0EDE6]/80">
-                        EM 9 DIAS
-                      </span>
-                      <Calendar className="h-3.5 w-3.5 text-[#5C5C5C]" />
-                    </div>
-                    <h4 className="mt-3 font-display text-sm font-semibold text-[#F0EDE6]">
-                      Algoritmos e Estruturas
-                    </h4>
-                    <p className="mt-1 text-xs text-[#5C5C5C]">
-                      Entrega do trabalho de árvores binárias.
-                    </p>
-                  </div>
-
-                  <div className="rounded-xl border border-[#2A2A2A] bg-[#141414] p-4">
-                    <div className="flex items-center justify-between">
-                      <span className="rounded bg-[#1E1E1E] px-2 py-0.5 font-mono text-[11px] font-semibold text-[#F0EDE6]/80">
-                        EM 14 DIAS
-                      </span>
-                      <Calendar className="h-3.5 w-3.5 text-[#5C5C5C]" />
-                    </div>
-                    <h4 className="mt-3 font-display text-sm font-semibold text-[#F0EDE6]">
-                      Banco de Dados Relacional
-                    </h4>
-                    <p className="mt-1 text-xs text-[#5C5C5C]">
-                      Avaliação prática de SQL e normalização.
+                      19h10 às 22h40 • Laboratório 04
                     </p>
                   </div>
                 </div>
               </div>
             )}
 
+            {/* ABA 3: COPILOTO DE DÚVIDAS */}
             {activeMockupTab === "copiloto" && (
               <div className="space-y-6">
-                <div className="flex flex-col justify-between gap-4 border-b border-[#2A2A2A] pb-4 sm:flex-row sm:items-center">
+                <div className="flex flex-col justify-between gap-4 border-b border-[#2A2A2A] pb-5 sm:flex-row sm:items-center">
                   <div>
                     <span className="font-mono text-xs uppercase text-[#C8B560]">
                       Orientação Pedagógica Ativa
                     </span>
-                    <h3 className="mt-1 font-display text-xl font-bold text-[#F0EDE6]">
-                      Copiloto Socrático: Teste seu Domínio
+                    <h3 className="mt-1 font-display text-2xl font-bold text-[#F0EDE6]">
+                      Desafio Socrático Pré-Prova
                     </h3>
                   </div>
-                  <span className="text-xs text-[#10B981]">
-                    Sem respostas automáticas • Foco no raciocínio
+                  <span className="rounded-full bg-[#10B981]/15 px-3 py-1 font-mono text-xs font-semibold text-[#10B981]">
+                    Sem respostas automáticas
                   </span>
                 </div>
 
-                <div className="rounded-xl border border-[#2A2A2A] bg-[#141414] p-5">
-                  <div className="flex items-center gap-2 text-xs font-semibold text-[#C8B560]">
-                    <Target className="h-4 w-4" />
-                    <span>Desafio de Fixação Proposto para sua Anotação:</span>
+                <div className="rounded-2xl border border-[#2A2A2A] bg-[#141414] p-6 sm:p-8 space-y-5">
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#C8B560] text-[#0A0A0A] font-bold">
+                      <Compass className="h-5 w-5" />
+                    </div>
+                    <div className="space-y-2">
+                      <span className="text-xs font-mono text-[#C8B560] uppercase">
+                        Pergunta Desafiadora do Copiloto
+                      </span>
+                      <p className="text-base font-medium leading-relaxed text-[#F0EDE6]">
+                        &quot;Se você precisa derivar h(x) = ln(x³ + 2), qual é a derivada da função
+                        externa e como a regra da cadeia conecta o termo 3x² no numerador?&quot;
+                      </p>
+                    </div>
                   </div>
-                  <p className="mt-2 text-sm leading-relaxed text-[#F0EDE6]/90">
-                    &quot;Se tivermos uma função h(x) = sin(x² + 3), qual é a derivada mais externa
-                    e qual é a derivada mais interna? Explique por que a resposta não é apenas
-                    cos(x² + 3).&quot;
-                  </p>
-                  <div className="mt-4 flex items-center justify-between border-t border-[#2A2A2A] pt-3 text-xs text-[#5C5C5C]">
-                    <span>Objetivo: Garantir que você domine o conceito antes da aula prática.</span>
-                    <span className="font-mono text-[#C8B560]">92% dos alunos aprovam o método</span>
+
+                  <div className="border-t border-[#2A2A2A] pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-[#5C5C5C]">
+                    <span>Objetivo: Provar que você domina o raciocínio antes do exame.</span>
+                    <span className="font-logo text-base text-[#C8B560]">
+                      estimula o raciocínio real
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ABA 4: MEU PROGRESSO */}
+            {activeMockupTab === "progresso" && (
+              <div className="space-y-6">
+                <div className="flex flex-col justify-between gap-4 border-b border-[#2A2A2A] pb-5 sm:flex-row sm:items-center">
+                  <div>
+                    <span className="font-mono text-xs uppercase text-[#C8B560]">
+                      Indicadores Acadêmicos
+                    </span>
+                    <h3 className="mt-1 font-display text-2xl font-bold text-[#F0EDE6]">
+                      Ritmo de Aprendizagem do Semestre
+                    </h3>
+                  </div>
+                  <span className="font-mono text-xs text-[#C8B560]">
+                    Semana 12 de 16 Concluída
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+                  <div className="rounded-2xl border border-[#2A2A2A] bg-[#141414] p-5">
+                    <span className="text-xs font-mono text-[#5C5C5C] uppercase">
+                      Horas Dedicadas
+                    </span>
+                    <div className="mt-2 font-display text-3xl font-bold text-[#F0EDE6]">
+                      14.5 Horas
+                    </div>
+                    <p className="mt-1 text-xs text-[#10B981]">
+                      +22% de foco em relação à semana passada
+                    </p>
+                  </div>
+
+                  <div className="rounded-2xl border border-[#2A2A2A] bg-[#141414] p-5">
+                    <span className="text-xs font-mono text-[#5C5C5C] uppercase">
+                      Metas Cumpridas
+                    </span>
+                    <div className="mt-2 font-display text-3xl font-bold text-[#C8B560]">
+                      8 de 10
+                    </div>
+                    <p className="mt-1 text-xs text-[#5C5C5C]">
+                      2 revisões pendentes para sábado
+                    </p>
+                  </div>
+
+                  <div className="rounded-2xl border border-[#2A2A2A] bg-[#141414] p-5">
+                    <span className="text-xs font-mono text-[#5C5C5C] uppercase">
+                      Frequência em Aulas
+                    </span>
+                    <div className="mt-2 font-display text-3xl font-bold text-[#F0EDE6]">
+                      100%
+                    </div>
+                    <p className="mt-1 text-xs text-[#10B981]">
+                      Todas as presenças registradas
+                    </p>
                   </div>
                 </div>
               </div>
@@ -568,9 +723,9 @@ export default function LandingPage() {
       </section>
 
       {/* ============================================================ */}
-      {/* 4. SEÇÃO DE RECURSOS (GRID ASSIMÉTRICO E CRIATIVO)            */}
+      {/* 4. RECURSOS COM BENTO GRID ASSIMÉTRICO (SEM REPETIÇÃO)        */}
       {/* ============================================================ */}
-      <section id="recursos" className="border-t border-[#2A2A2A] bg-[#0E0E0E] py-24">
+      <section id="recursos" className="border-t border-[#2A2A2A] bg-[#0E0E0E] py-24 sm:py-28">
         <div className="mx-auto max-w-6xl px-6">
           <div className="max-w-2xl">
             <span className="font-mono text-xs uppercase text-[#C8B560]">
@@ -580,164 +735,182 @@ export default function LandingPage() {
               Tudo o que você precisa para dominar suas disciplinas.
             </h2>
             <p className="mt-4 text-base text-[#5C5C5C]">
-              Adeus anotações dispersas em cadernos de papel e avisos perdidos em grupos de
-              mensagens. A Thinka centraliza o seu universo de estudos com leveza e clareza.
+              Adeus anotações dispersas em folhas perdidas e avisos esquecidos em grupos. A
+              Thinka organiza o seu universo acadêmico com clareza.
             </p>
           </div>
 
-          <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {/* Card 1: Caderno de Estudos */}
-            <div className="rounded-2xl border border-[#2A2A2A] bg-[#141414] p-7 transition hover:border-[#5C5C5C]">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#1E1E1E] text-[#C8B560]">
-                <BookOpen className="h-5 w-5" />
+          {/* Bento Grid Assimétrico */}
+          <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
+            {/* Bento 1: Card Grande Horizontal (2 Colunas) */}
+            <div className="md:col-span-2 rounded-3xl border border-[#2A2A2A] bg-[#141414] p-8 transition hover:border-[#5C5C5C] flex flex-col justify-between">
+              <div>
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#1E1E1E] text-[#C8B560]">
+                  <BookOpen className="h-6 w-6" />
+                </div>
+                <h3 className="mt-6 font-display text-xl font-bold text-[#F0EDE6]">
+                  Caderno Inteligente por Matéria
+                </h3>
+                <p className="mt-2.5 max-w-lg text-sm leading-relaxed text-[#5C5C5C]">
+                  Centralize anotações, fórmulas e resumos organizados por semestre. Cada disciplina
+                  possui seu espaço dedicado, livre de distrações e disponível no celular e no computador.
+                </p>
               </div>
-              <h3 className="mt-5 font-display text-lg font-semibold text-[#F0EDE6]">
-                Caderno Inteligente por Matéria
-              </h3>
-              <p className="mt-2.5 text-xs leading-relaxed text-[#5C5C5C]">
-                Crie anotações ricas para cada disciplina do seu semestre. Organize fórmulas,
-                conceitos e resumos em um espaço focado e livre de distrações.
-              </p>
+
+              <div className="mt-6 flex flex-wrap items-center gap-3 pt-6 border-t border-[#2A2A2A]">
+                <span className="rounded-lg bg-[#0A0A0A] px-3 py-1 text-xs text-[#F0EDE6]/80">
+                  Anotações Sincronizadas
+                </span>
+                <span className="rounded-lg bg-[#0A0A0A] px-3 py-1 text-xs text-[#F0EDE6]/80">
+                  Etiquetas por Tópico
+                </span>
+                <span className="font-logo text-sm text-[#C8B560]">
+                  seu caderno sempre organizado
+                </span>
+              </div>
             </div>
 
-            {/* Card 2: Radar de Avaliações */}
-            <div className="rounded-2xl border border-[#2A2A2A] bg-[#141414] p-7 transition hover:border-[#5C5C5C]">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#1E1E1E] text-[#C8B560]">
-                <Clock className="h-5 w-5" />
+            {/* Bento 2: Card Vertical de Destaque (1 Coluna) */}
+            <div className="rounded-3xl border border-[#2A2A2A] bg-[#141414] p-8 transition hover:border-[#5C5C5C] flex flex-col justify-between">
+              <div>
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#1E1E1E] text-[#C8B560]">
+                  <Clock className="h-6 w-6" />
+                </div>
+                <h3 className="mt-6 font-display text-xl font-bold text-[#F0EDE6]">
+                  Radar de Avaliações
+                </h3>
+                <p className="mt-2.5 text-xs leading-relaxed text-[#5C5C5C]">
+                  Contagem regressiva automática para datas de provas e entregas de trabalhos.
+                  Chega de surpresas no calendário.
+                </p>
               </div>
-              <h3 className="mt-5 font-display text-lg font-semibold text-[#F0EDE6]">
-                Radar de Provas e Trabalhos
-              </h3>
-              <p className="mt-2.5 text-xs leading-relaxed text-[#5C5C5C]">
-                Contagem regressiva automática para suas avaliações. Saiba exatamente quantos dias
-                faltam para cada prova e planeje suas semanas sem ansiedade.
-              </p>
+
+              <div className="mt-6 rounded-2xl border border-[#2A2A2A] bg-[#0A0A0A] p-4 text-center">
+                <span className="font-mono text-xs text-[#C8B560] block font-semibold">
+                  PROXIMA PROVA
+                </span>
+                <span className="font-display text-2xl font-bold text-[#F0EDE6]">
+                  Em 4 Dias
+                </span>
+                <span className="text-[11px] text-[#5C5C5C] block mt-0.5">
+                  Cálculo Diferencial I
+                </span>
+              </div>
             </div>
 
-            {/* Card 3: Gestão de Turmas */}
-            <div className="rounded-2xl border border-[#2A2A2A] bg-[#141414] p-7 transition hover:border-[#5C5C5C]">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#1E1E1E] text-[#C8B560]">
-                <Users className="h-5 w-5" />
+            {/* Bento 3: Gestão de Turmas (1 Coluna) */}
+            <div className="rounded-3xl border border-[#2A2A2A] bg-[#141414] p-8 transition hover:border-[#5C5C5C] flex flex-col justify-between">
+              <div>
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#1E1E1E] text-[#C8B560]">
+                  <Users className="h-6 w-6" />
+                </div>
+                <h3 className="mt-6 font-display text-xl font-bold text-[#F0EDE6]">
+                  Turmas com Código
+                </h3>
+                <p className="mt-2.5 text-xs leading-relaxed text-[#5C5C5C]">
+                  Docentes criam turmas em segundos, distribuem o código para a sala e moderam as
+                  entradas com facilidade.
+                </p>
               </div>
-              <h3 className="mt-5 font-display text-lg font-semibold text-[#F0EDE6]">
-                Turmas Conectadas com Código
-              </h3>
-              <p className="mt-2.5 text-xs leading-relaxed text-[#5C5C5C]">
-                Professores criam turmas com código único e aprovam estudantes em um clique.
-                Mural de comunicados oficial sem ruído ou conversas paralelas.
-              </p>
+
+              <div className="mt-6 pt-4 border-t border-[#2A2A2A]">
+                <span className="font-mono text-xs text-[#C8B560]">
+                  Código Exclusivo • THK-COMP-4B
+                </span>
+              </div>
             </div>
 
-            {/* Card 4: Copiloto Socrático */}
-            <div className="rounded-2xl border border-[#2A2A2A] bg-[#141414] p-7 transition hover:border-[#5C5C5C]">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#1E1E1E] text-[#C8B560]">
-                <Compass className="h-5 w-5" />
+            {/* Bento 4: Copiloto Socrático (2 Colunas) */}
+            <div className="md:col-span-2 rounded-3xl border border-[#2A2A2A] bg-[#141414] p-8 transition hover:border-[#5C5C5C] flex flex-col justify-between">
+              <div>
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#1E1E1E] text-[#C8B560]">
+                  <Compass className="h-6 w-6" />
+                </div>
+                <h3 className="mt-6 font-display text-xl font-bold text-[#F0EDE6]">
+                  Copiloto Pedagógico Socrático
+                </h3>
+                <p className="mt-2.5 max-w-lg text-sm leading-relaxed text-[#5C5C5C]">
+                  Diferente de IAs genéricas que fornecem respostas mastigadas e anulam o aprendizado,
+                  o copiloto da Thinka desafia você com perguntas de fixação para que você domine o
+                  conteúdo por conta própria.
+                </p>
               </div>
-              <h3 className="mt-5 font-display text-lg font-semibold text-[#F0EDE6]">
-                Copiloto Pedagógico
-              </h3>
-              <p className="mt-2.5 text-xs leading-relaxed text-[#5C5C5C]">
-                Em vez de dar respostas prontas que anulam o raciocínio, o copiloto faz perguntas
-                chave para você consolidar o aprendizado e testar seu domínio real.
-              </p>
-            </div>
 
-            {/* Card 5: Metas de Aprendizagem */}
-            <div className="rounded-2xl border border-[#2A2A2A] bg-[#141414] p-7 transition hover:border-[#5C5C5C]">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#1E1E1E] text-[#C8B560]">
-                <TrendingUp className="h-5 w-5" />
+              <div className="mt-6 flex flex-wrap items-center justify-between gap-3 pt-6 border-t border-[#2A2A2A]">
+                <span className="text-xs text-[#10B981]">
+                  Foco na autonomia real do estudante
+                </span>
+                <span className="font-logo text-sm text-[#C8B560]">
+                  perguntas que fazem pensar!
+                </span>
               </div>
-              <h3 className="mt-5 font-display text-lg font-semibold text-[#F0EDE6]">
-                Progresso e Metas Semanais
-              </h3>
-              <p className="mt-2.5 text-xs leading-relaxed text-[#5C5C5C]">
-                Defina sua frequência de estudos, acompanhe disciplinas concluídas e veja sua
-                confiança acadêmica crescer dia após dia com métricas visuais.
-              </p>
-            </div>
-
-            {/* Card 6: Privacidade e Segurança */}
-            <div className="rounded-2xl border border-[#2A2A2A] bg-[#141414] p-7 transition hover:border-[#5C5C5C]">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#1E1E1E] text-[#C8B560]">
-                <ShieldCheck className="h-5 w-5" />
-              </div>
-              <h3 className="mt-5 font-display text-lg font-semibold text-[#F0EDE6]">
-                Privacidade & Segurança
-              </h3>
-              <p className="mt-2.5 text-xs leading-relaxed text-[#5C5C5C]">
-                Controle rigoroso sobre a visibilidade do seu perfil. Autenticação segura,
-                sessões criptografadas e conformidade integral com proteção de dados (LGPD).
-              </p>
             </div>
           </div>
         </div>
       </section>
 
       {/* ============================================================ */}
-      {/* 5. EXPERIÊNCIA DO ALUNO (FOCO NO ESTUDANTE)                   */}
+      {/* 5. EXPERIÊNCIA DO ALUNO (ESTUDO COM FOCO)                     */}
       {/* ============================================================ */}
-      <section id="alunos" className="mx-auto max-w-6xl px-6 py-24">
+      <section id="alunos" className="mx-auto max-w-6xl px-6 py-24 sm:py-28">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
           <div>
             <span className="font-mono text-xs uppercase text-[#C8B560]">
               Para Estudantes
             </span>
             <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-[#F0EDE6] sm:text-4xl">
-              Estude com autonomia, sem o estresse da véspera da prova.
+              Estude com autonomia, sem o desespero da véspera da prova.
             </h2>
             <p className="mt-4 text-base leading-relaxed text-[#5C5C5C]">
-              A Thinka foi projetada para colocar você no controle da sua jornada. Sem pilhas de
-              cadernos bagunçados e sem aquela sensação de não saber por onde começar a estudar.
+              A Thinka foi desenhada para colocar você no controle da sua rotina: todas as suas
+              disciplinas organizadas, prazos visíveis e preparação contínua sem sobrecarga.
             </p>
 
             <div className="mt-8 space-y-5">
               <div className="flex items-start gap-4">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#2A2A2A] text-[#C8B560]">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#2A2A2A] text-[#C8B560]">
                   <CheckCircle2 className="h-4 w-4" />
                 </div>
                 <div>
                   <h4 className="text-sm font-semibold text-[#F0EDE6]">
-                    Caderno sempre à mão no celular e no computador
+                    Caderno sincronizado no celular e computador
                   </h4>
                   <p className="mt-1 text-xs text-[#5C5C5C] leading-relaxed">
-                    Acesse suas anotações durante a aula no laboratório ou no ônibus. Tudo fica
-                    salvo e sincronizado na sua conta.
+                    Acesse suas anotações durante a aula ou no trajeto para a faculdade.
                   </p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#2A2A2A] text-[#C8B560]">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#2A2A2A] text-[#C8B560]">
                   <CheckCircle2 className="h-4 w-4" />
                 </div>
                 <div>
                   <h4 className="text-sm font-semibold text-[#F0EDE6]">
-                    Diga adeus a surpresas em datas de avaliações
+                    Radar de avaliações que evita surpresas
                   </h4>
                   <p className="mt-1 text-xs text-[#5C5C5C] leading-relaxed">
-                    O radar de provas calcula os dias restantes para cada exame, permitindo que
-                    você distribua o conteúdo com calma ao longo das semanas.
+                    Contagem regressiva de dias para cada prova para você planejar suas revisões.
                   </p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#2A2A2A] text-[#C8B560]">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#2A2A2A] text-[#C8B560]">
                   <CheckCircle2 className="h-4 w-4" />
                 </div>
                 <div>
                   <h4 className="text-sm font-semibold text-[#F0EDE6]">
-                    Descubra suas dúvidas antes da prova acontecer
+                    Descubra suas dúvidas antes do exame
                   </h4>
                   <p className="mt-1 text-xs text-[#5C5C5C] leading-relaxed">
-                    O copiloto analisa suas anotações e faz perguntas provocativas para identificar
-                    se há lacunas conceituais antes do exame chegar.
+                    O copiloto faz perguntas de caso para testar se o conceito foi realmente entendido.
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="mt-10">
+            <div className="mt-10 flex items-center gap-4">
               <Link
                 href="/cadastro"
                 className="inline-flex items-center gap-2 rounded-xl bg-[#C8B560] px-5 py-3 text-xs font-semibold text-[#0A0A0A] transition hover:bg-[#F0EDE6]"
@@ -745,14 +918,17 @@ export default function LandingPage() {
                 <span>Criar minha conta de aluno</span>
                 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
+              <span className="font-logo text-base text-[#C8B560]">
+                sem mensalidade!
+              </span>
             </div>
           </div>
 
           {/* Card Ilustrativo do Aluno */}
-          <div className="rounded-2xl border border-[#2A2A2A] bg-[#141414] p-8">
-            <div className="flex items-center justify-between border-b border-[#2A2A2A] pb-4">
+          <div className="rounded-3xl border border-[#2A2A2A] bg-[#141414] p-8 shadow-xl">
+            <div className="flex items-center justify-between border-b border-[#2A2A2A] pb-5">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#2A2A2A] font-bold text-[#C8B560]">
+                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#2A2A2A] font-bold text-[#C8B560]">
                   M
                 </div>
                 <div>
@@ -766,22 +942,26 @@ export default function LandingPage() {
             </div>
 
             <div className="mt-6 space-y-4">
-              <div className="rounded-xl border border-[#2A2A2A] bg-[#0A0A0A] p-4">
-                <span className="text-xs text-[#5C5C5C]">Meta semanal de estudo</span>
+              <div className="rounded-2xl border border-[#2A2A2A] bg-[#0A0A0A] p-5">
+                <span className="text-xs text-[#5C5C5C] uppercase font-mono">
+                  Meta semanal de estudo
+                </span>
                 <div className="mt-2 flex items-center justify-between text-xs">
                   <span className="font-semibold text-[#F0EDE6]">12 de 15 horas completadas</span>
                   <span className="font-bold text-[#C8B560]">80%</span>
                 </div>
-                <div className="mt-2 h-2 w-full rounded-full bg-[#2A2A2A]">
+                <div className="mt-3 h-2 w-full rounded-full bg-[#2A2A2A]">
                   <div className="h-2 rounded-full bg-[#C8B560]" style={{ width: "80%" }} />
                 </div>
               </div>
 
-              <div className="rounded-xl border border-[#2A2A2A] bg-[#0A0A0A] p-4">
-                <span className="text-xs text-[#5C5C5C]">Próximo compromisso importante</span>
+              <div className="rounded-2xl border border-[#2A2A2A] bg-[#0A0A0A] p-5">
+                <span className="text-xs text-[#5C5C5C] uppercase font-mono">
+                  Próxima entrega relevante
+                </span>
                 <div className="mt-1 flex items-center justify-between">
                   <span className="text-sm font-medium text-[#F0EDE6]">
-                    Entrega de Redes de Computadores
+                    Redes de Computadores • Prática 03
                   </span>
                   <span className="font-mono text-xs text-[#C8B560]">Amanhã</span>
                 </div>
@@ -792,16 +972,16 @@ export default function LandingPage() {
       </section>
 
       {/* ============================================================ */}
-      {/* 6. EXPERIÊNCIA DO PROFESSOR (FOCO NO DOCENTE)                 */}
+      {/* 6. EXPERIÊNCIA DO PROFESSOR (CONEXÃO DOCENTE)                 */}
       {/* ============================================================ */}
-      <section id="professores" className="border-t border-[#2A2A2A] bg-[#0E0E0E] py-24">
+      <section id="professores" className="border-t border-[#2A2A2A] bg-[#0E0E0E] py-24 sm:py-28">
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
             {/* Card Ilustrativo do Professor */}
-            <div className="order-2 lg:order-1 rounded-2xl border border-[#2A2A2A] bg-[#141414] p-8">
-              <div className="flex items-center justify-between border-b border-[#2A2A2A] pb-4">
+            <div className="order-2 lg:order-1 rounded-3xl border border-[#2A2A2A] bg-[#141414] p-8 shadow-xl">
+              <div className="flex items-center justify-between border-b border-[#2A2A2A] pb-5">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#2A2A2A] font-bold text-[#C8B560]">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#2A2A2A] font-bold text-[#C8B560]">
                     P
                   </div>
                   <div>
@@ -819,20 +999,20 @@ export default function LandingPage() {
               </div>
 
               <div className="mt-6 space-y-4">
-                <div className="rounded-xl border border-[#2A2A2A] bg-[#0A0A0A] p-4">
+                <div className="rounded-2xl border border-[#2A2A2A] bg-[#0A0A0A] p-5">
                   <div className="flex items-center justify-between text-xs">
                     <span className="font-medium text-[#F0EDE6]">Estruturas de Dados B</span>
-                    <span className="text-[#C8B560]">42 alunos</span>
+                    <span className="text-[#C8B560] font-mono">42 alunos</span>
                   </div>
                   <p className="mt-1 text-xs text-[#5C5C5C]">
                     Mural atualizado com materiais da última aula prática.
                   </p>
                 </div>
 
-                <div className="rounded-xl border border-[#2A2A2A] bg-[#0A0A0A] p-4">
+                <div className="rounded-2xl border border-[#2A2A2A] bg-[#0A0A0A] p-5">
                   <div className="flex items-center justify-between text-xs">
                     <span className="font-medium text-[#F0EDE6]">Engenharia de Software</span>
-                    <span className="text-[#C8B560]">36 alunos</span>
+                    <span className="text-[#C8B560] font-mono">36 alunos</span>
                   </div>
                   <p className="mt-1 text-xs text-[#5C5C5C]">
                     Cronograma de entregas de sprints alinhado com a turma.
@@ -843,65 +1023,62 @@ export default function LandingPage() {
 
             <div className="order-1 lg:order-2">
               <span className="font-mono text-xs uppercase text-[#C8B560]">
-                Para Docentes & Educadores
+                Para Docentes &amp; Educadores
               </span>
               <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-[#F0EDE6] sm:text-4xl">
                 Mais conexão pedagógica, menos tempo gasto com burocracia.
               </h2>
               <p className="mt-4 text-base leading-relaxed text-[#5C5C5C]">
-                A Thinka ajuda você a gerenciar turmas sem fricção: envie um código de acesso para a
-                sala, aprove alunos em segundos e mantenha um canal oficial de comunicação que
-                seus estudantes realmente leem.
+                A Thinka ajuda você a coordenar turmas sem ruído: envie o código de convite para a
+                sala, aprove os alunos com um clique e mantenha um mural institucional com avisos e
+                cronogramas que seus estudantes realmente acompanham.
               </p>
 
               <div className="mt-8 space-y-5">
                 <div className="flex items-start gap-4">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#2A2A2A] text-[#C8B560]">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#2A2A2A] text-[#C8B560]">
                     <CheckCircle2 className="h-4 w-4" />
                   </div>
                   <div>
                     <h4 className="text-sm font-semibold text-[#F0EDE6]">
-                      Criação instantânea de turmas
+                      Crie turmas em menos de um minuto
                     </h4>
                     <p className="mt-1 text-xs text-[#5C5C5C] leading-relaxed">
-                      Crie um espaço para a sua disciplina em segundos. O sistema gera um código de
-                      convite limpo que você compartilha no início do período letivo.
+                      Defina a disciplina, gere o código exclusivo e compartilhe com a sala.
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#2A2A2A] text-[#C8B560]">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#2A2A2A] text-[#C8B560]">
                     <CheckCircle2 className="h-4 w-4" />
                   </div>
                   <div>
                     <h4 className="text-sm font-semibold text-[#F0EDE6]">
-                      Mural acadêmico sem ruído
+                      Mural acadêmico sem conversas paralelas
                     </h4>
                     <p className="mt-1 text-xs text-[#5C5C5C] leading-relaxed">
-                      Publique orientações de provas, materiais e datas importantes em um mural
-                      oficial que fica fixado e visível para toda a classe.
+                      Avisos oficiais de datas, provas e materiais fixados em um só canal.
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#2A2A2A] text-[#C8B560]">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#2A2A2A] text-[#C8B560]">
                     <CheckCircle2 className="h-4 w-4" />
                   </div>
                   <div>
                     <h4 className="text-sm font-semibold text-[#F0EDE6]">
-                      Visão do ritmo de estudo dos alunos
+                      Acompanhamento contínuo da sala
                     </h4>
                     <p className="mt-1 text-xs text-[#5C5C5C] leading-relaxed">
-                      Acompanhe quem está ativo nas disciplinas e identifique matérias que merecem
-                      uma aula de reforço antes da avaliação oficial.
+                      Identifique matérias que merecem uma aula de revisão antes da prova oficial.
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-10">
+              <div className="mt-10 flex items-center gap-4">
                 <Link
                   href="/cadastro"
                   className="inline-flex items-center gap-2 rounded-xl bg-[#F0EDE6] px-5 py-3 text-xs font-semibold text-[#0A0A0A] transition hover:bg-[#C8B560]"
@@ -909,6 +1086,9 @@ export default function LandingPage() {
                   <span>Cadastrar como professor</span>
                   <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
+                <span className="font-logo text-base text-[#C8B560]">
+                  gestão ágil de turmas
+                </span>
               </div>
             </div>
           </div>
@@ -916,15 +1096,15 @@ export default function LandingPage() {
       </section>
 
       {/* ============================================================ */}
-      {/* 7. COMO A PLATAFORMA FUNCIONA (PASSO A PASSO SIMPLES)          */}
+      {/* 7. COMO FUNCIONA (TIMELINE CONECTADA EM 3 PASSOS)             */}
       {/* ============================================================ */}
-      <section id="como-funciona" className="mx-auto max-w-6xl px-6 py-24">
+      <section id="como-funciona" className="mx-auto max-w-6xl px-6 py-24 sm:py-28">
         <div className="text-center max-w-2xl mx-auto">
           <span className="font-mono text-xs uppercase text-[#C8B560]">
             Três Passos Simples
           </span>
           <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-[#F0EDE6] sm:text-4xl">
-            Como a Thinka funciona no dia a dia.
+            Como a Thinka funciona no seu dia a dia.
           </h2>
           <p className="mt-3 text-sm text-[#5C5C5C]">
             Em menos de dois minutos você já está com o seu espaço acadêmico montado.
@@ -933,80 +1113,107 @@ export default function LandingPage() {
 
         <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3">
           {/* Passo 1 */}
-          <div className="rounded-2xl border border-[#2A2A2A] bg-[#141414] p-8 text-center sm:text-left">
-            <span className="font-mono text-xs font-bold text-[#C8B560]">PASSO 01</span>
-            <h3 className="mt-3 font-display text-lg font-semibold text-[#F0EDE6]">
-              Crie sua conta em 1 minuto
-            </h3>
-            <p className="mt-2 text-xs leading-relaxed text-[#5C5C5C]">
-              Escolha seu perfil (Aluno ou Professor), informe sua instituição e configure suas
-              disciplinas e preferências de estudo.
-            </p>
+          <div className="rounded-3xl border border-[#2A2A2A] bg-[#141414] p-8 text-center sm:text-left relative flex flex-col justify-between">
+            <div>
+              <span className="font-mono text-xs font-bold text-[#C8B560]">PASSO 01</span>
+              <h3 className="mt-3 font-display text-xl font-bold text-[#F0EDE6]">
+                Crie sua conta em 1 minuto
+              </h3>
+              <p className="mt-3 text-xs leading-relaxed text-[#5C5C5C]">
+                Escolha seu perfil (Aluno ou Professor), indique suas disciplinas e personalize
+                suas metas acadêmicas de estudo.
+              </p>
+            </div>
+            <div className="mt-6 pt-4 border-t border-[#2A2A2A]">
+              <span className="font-logo text-sm text-[#F0EDE6]/60">
+                cadastro simples e rápido
+              </span>
+            </div>
           </div>
 
           {/* Passo 2 */}
-          <div className="rounded-2xl border border-[#2A2A2A] bg-[#141414] p-8 text-center sm:text-left">
-            <span className="font-mono text-xs font-bold text-[#C8B560]">PASSO 02</span>
-            <h3 className="mt-3 font-display text-lg font-semibold text-[#F0EDE6]">
-              Conecte-se à sua turma
-            </h3>
-            <p className="mt-2 text-xs leading-relaxed text-[#5C5C5C]">
-              Estudantes entram digitando o código fornecido pelo professor; docentes criam suas
-              turmas e compartilham com a sala com total controle de acesso.
-            </p>
+          <div className="rounded-3xl border border-[#2A2A2A] bg-[#141414] p-8 text-center sm:text-left relative flex flex-col justify-between">
+            <div>
+              <span className="font-mono text-xs font-bold text-[#C8B560]">PASSO 02</span>
+              <h3 className="mt-3 font-display text-xl font-bold text-[#F0EDE6]">
+                Conecte-se à sua turma
+              </h3>
+              <p className="mt-3 text-xs leading-relaxed text-[#5C5C5C]">
+                Estudantes digitam o código compartilhado pelo docente; professores criam o
+                espaço da disciplina com vagas definidas.
+              </p>
+            </div>
+            <div className="mt-6 pt-4 border-t border-[#2A2A2A]">
+              <span className="font-logo text-sm text-[#F0EDE6]/60">
+                código único por disciplina
+              </span>
+            </div>
           </div>
 
           {/* Passo 3 */}
-          <div className="rounded-2xl border border-[#2A2A2A] bg-[#141414] p-8 text-center sm:text-left">
-            <span className="font-mono text-xs font-bold text-[#C8B560]">PASSO 03</span>
-            <h3 className="mt-3 font-display text-lg font-semibold text-[#F0EDE6]">
-              Aprenda, ensine e evolua
-            </h3>
-            <p className="mt-2 text-xs leading-relaxed text-[#5C5C5C]">
-              Mantenha anotações organizadas, acompanhe o radar de datas de provas, receba
-              desafios socráticos e estude com foco semana a semana.
-            </p>
+          <div className="rounded-3xl border border-[#2A2A2A] bg-[#141414] p-8 text-center sm:text-left relative flex flex-col justify-between">
+            <div>
+              <span className="font-mono text-xs font-bold text-[#C8B560]">PASSO 03</span>
+              <h3 className="mt-3 font-display text-xl font-bold text-[#F0EDE6]">
+                Aprenda, ensine e evolua
+              </h3>
+              <p className="mt-3 text-xs leading-relaxed text-[#5C5C5C]">
+                Organize anotações de aula, acompanhe o radar de datas de provas, receba desafios do
+                copiloto e estude com foco constante.
+              </p>
+            </div>
+            <div className="mt-6 pt-4 border-t border-[#2A2A2A]">
+              <span className="font-logo text-sm text-[#C8B560]">
+                estudo com autonomia!
+              </span>
+            </div>
           </div>
         </div>
       </section>
 
       {/* ============================================================ */}
-      {/* 8. DIFERENCIAIS DA THINKA (POR QUE NÓS?)                     */}
+      {/* 8. DIFERENCIAIS DA THINKA (CONTRASTE DIRETO)                  */}
       {/* ============================================================ */}
-      <section id="diferenciais" className="border-t border-[#2A2A2A] bg-[#0E0E0E] py-24">
+      <section id="diferenciais" className="border-t border-[#2A2A2A] bg-[#0E0E0E] py-24 sm:py-28">
         <div className="mx-auto max-w-6xl px-6">
           <div className="max-w-2xl">
             <span className="font-mono text-xs uppercase text-[#C8B560]">
               Nossa Filosofia
             </span>
             <h2 className="mt-2 font-display text-3xl font-bold tracking-tight text-[#F0EDE6] sm:text-4xl">
-              Feito para o estudo de verdade, não para atalhos superficiais.
+              Feito para o estudo de verdade, não para atalhos artificiais.
             </h2>
             <p className="mt-4 text-base text-[#5C5C5C]">
               A tecnologia deve amplificar a sua capacidade de pensar, não substituir o seu esforço.
             </p>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
-            <div className="rounded-2xl border border-[#2A2A2A] bg-[#141414] p-7">
-              <h4 className="font-display text-base font-semibold text-[#F0EDE6]">
-                Plataformas Tradicionais vs Thinka
+          <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div className="rounded-3xl border border-[#2A2A2A] bg-[#141414] p-8">
+              <span className="font-mono text-xs uppercase text-[#5C5C5C]">
+                Plataformas Legadas &amp; Chats Passivos
+              </span>
+              <h4 className="mt-2 font-display text-lg font-bold text-[#F0EDE6]">
+                Sistemas lentos e respostas prontas
               </h4>
-              <p className="mt-2 text-xs leading-relaxed text-[#5C5C5C]">
-                Enquanto sistemas convencionais são lentos, cheios de menus complexos e parecem
-                feitas para auditorias contábeis dos anos 90, a Thinka oferece uma interface
-                descontraída, veloz e agradável de usar todos os dias.
+              <p className="mt-3 text-xs leading-relaxed text-[#5C5C5C]">
+                Sistemas tradicionais são burocráticos e cheios de menus complicados. Ao mesmo
+                tempo, chats genéricos entregam respostas mastigadas que criam uma falsa sensação
+                de domínio, deixando o aluno sem chão na hora da prova oficial.
               </p>
             </div>
 
-            <div className="rounded-2xl border border-[#2A2A2A] bg-[#141414] p-7">
-              <h4 className="font-display text-base font-semibold text-[#F0EDE6]">
-                Chats de IA Genéricos vs Copiloto Pedagógico Thinka
+            <div className="rounded-3xl border border-[#C8B560]/40 bg-[#141414] p-8">
+              <span className="font-mono text-xs uppercase text-[#C8B560]">
+                A Experiência Thinka
+              </span>
+              <h4 className="mt-2 font-display text-lg font-bold text-[#F0EDE6]">
+                Interface limpa e estímulo ao raciocínio
               </h4>
-              <p className="mt-2 text-xs leading-relaxed text-[#5C5C5C]">
-                Chats convencionais dão a resposta mastigada, criando a ilusão de aprendizado que
-                desaparece na hora da prova. O copiloto da Thinka diagnostica seus pontos cegos e
-                provoca você a construir a solução com autonomia.
+              <p className="mt-3 text-xs leading-relaxed text-[#F0EDE6]/80">
+                Uma interface leve, rápida e moderna. Cadernos organizados por matéria, radar de
+                avaliações com contagem regressiva e um copiloto que faz perguntas socráticas para
+                que você aprenda de verdade e retenha o conhecimento.
               </p>
             </div>
           </div>
@@ -1014,9 +1221,9 @@ export default function LandingPage() {
       </section>
 
       {/* ============================================================ */}
-      {/* 9. PERGUNTAS FREQUENTES (FAQ EDUCACIONAL EM ACCORDION)         */}
+      {/* 9. FAQ EDUCACIONAL EM ACCORDION                              */}
       {/* ============================================================ */}
-      <section id="faq" className="mx-auto max-w-4xl px-6 py-24">
+      <section id="faq" className="mx-auto max-w-4xl px-6 py-24 sm:py-28">
         <div className="text-center max-w-xl mx-auto">
           <span className="font-mono text-xs uppercase text-[#C8B560]">
             Tire Suas Dúvidas
@@ -1046,10 +1253,10 @@ export default function LandingPage() {
             </button>
             {faqOpen === 0 && (
               <p className="mt-3 text-xs leading-relaxed text-[#5C5C5C]">
-                A Thinka é uma plataforma educacional moderna que conecta estudantes e professores.
+                A Thinka é uma plataforma educacional desenvolvida para estudantes e professores.
                 Ela oferece organização de cadernos por matéria, radar de datas de provas,
-                acompanhamento pedagógico, gestão de turmas com código e um copiloto de estudos que
-                estimula o raciocínio crítico.
+                acompanhamento pedagógico, gestão de turmas com código exclusivo e um copiloto de
+                estudos que estimula o raciocínio crítico.
               </p>
             )}
           </div>
@@ -1095,8 +1302,7 @@ export default function LandingPage() {
               <p className="mt-3 text-xs leading-relaxed text-[#5C5C5C]">
                 Diferente de assistentes genéricos que entregam respostas prontas, o copiloto da
                 Thinka analisa as anotações do próprio estudante, identifica pontos fortes e
-                lacunas de compreensão, gerando perguntas desafiadoras para que ele fixe o
-                conteúdo com autonomia.
+                lacunas conceituais, gerando perguntas desafiadoras para que ele fixe o conteúdo com autonomia.
               </p>
             )}
           </div>
@@ -1152,13 +1358,13 @@ export default function LandingPage() {
       {/* ============================================================ */}
       {/* 10. CHAMADA FINAL PARA CADASTRO (CTA DE ALTA CONVERSÃO)       */}
       {/* ============================================================ */}
-      <section className="border-t border-[#2A2A2A] bg-[#0E0E0E] py-20">
+      <section className="border-t border-[#2A2A2A] bg-[#0E0E0E] py-20 sm:py-24">
         <div className="mx-auto max-w-4xl px-6 text-center">
-          <div className="rounded-2xl border border-[#2A2A2A] bg-[#141414] p-10 sm:p-14">
+          <div className="rounded-3xl border border-[#2A2A2A] bg-[#141414] p-10 sm:p-16 shadow-2xl relative overflow-hidden">
             <span className="font-mono text-xs uppercase text-[#C8B560]">
               Comece Hoje Mesmo
             </span>
-            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-[#F0EDE6] sm:text-4xl">
+            <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-[#F0EDE6] sm:text-5xl">
               Pronto para transformar sua rotina de estudos?
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-[#5C5C5C]">
@@ -1187,7 +1393,7 @@ export default function LandingPage() {
       </section>
 
       {/* ============================================================ */}
-      {/* 11. RODAPÉ INSTITUCIONAL COMPLETO                             */}
+      {/* 11. RODAPÉ INSTITUCIONAL                                      */}
       {/* ============================================================ */}
       <footer className="border-t border-[#2A2A2A] bg-[#0A0A0A] py-14 text-xs text-[#5C5C5C]">
         <div className="mx-auto max-w-6xl px-6">
@@ -1215,7 +1421,7 @@ export default function LandingPage() {
                 Recursos
               </a>
               <a href="#demonstracao" className="transition hover:text-[#C8B560]">
-                Como Funciona
+                Demonstração
               </a>
               <Link href="/dashboard" className="transition hover:text-[#C8B560]">
                 Meu Painel
