@@ -25,7 +25,7 @@ interface SlideItem {
 const SLIDES: SlideItem[] = [
   {
     number: "01",
-    tag: "IV SIMPOSIO DE IA // UNIMAX",
+    tag: "IV SIMPOSIO DE IA — UNIMAX",
     title: "De quem e a resposta?",
     subtitle:
       "VERITAS: transformando a IA de oraculo que pensa pelo aluno em objeto de exame critico em sala de aula.",
@@ -51,7 +51,7 @@ const SLIDES: SlideItem[] = [
   },
   {
     number: "03",
-    tag: "PILAR 01 // RAIO-X DA IA",
+    tag: "PILAR 01 — RAIO-X DA IA",
     title: "Colocamos a IA na mesa de exame",
     subtitle:
       "O estudante recebe casos reais onde a IA errou em Computacao, Saude e Negocios.",
@@ -64,7 +64,7 @@ const SLIDES: SlideItem[] = [
   },
   {
     number: "04",
-    tag: "PILAR 02 // TESTE DE AUTORIA",
+    tag: "PILAR 02 — TESTE DE AUTORIA",
     title: "Defesa em 60 segundos",
     subtitle:
       "Em vez de proibir a IA, alteramos 1 linha do trabalho entregue pelo aluno e medimos se ele percebe.",
@@ -77,7 +77,7 @@ const SLIDES: SlideItem[] = [
   },
   {
     number: "05",
-    tag: "PILAR 03 // ARENA AO VIVO",
+    tag: "PILAR 03 — ARENA AO VIVO",
     title: "Medindo a originalidade da sala",
     subtitle:
       "Todos respondem pelo celular e o mapa mostra em tempo real se a turma caiu no efeito manada.",
@@ -90,7 +90,7 @@ const SLIDES: SlideItem[] = [
   },
   {
     number: "06",
-    tag: "RESULTADOS // 16 SEMANAS",
+    tag: "RESULTADOS — 16 SEMANAS",
     title: "Evidencia com 48 estudantes",
     subtitle:
       "Comparacao entre turma usando resumos comuns de IA e turma usando VERITAS na UniMAX.",

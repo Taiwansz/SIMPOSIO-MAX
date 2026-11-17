@@ -129,7 +129,7 @@ export default function OverviewHub({
   const handleExportAdminReport = () => {
     const report = {
       generatedAt: new Date().toISOString(),
-      platform: "VERITAS // UniMAX",
+      platform: "VERITAS UniMAX",
       totals: {
         users: adminUsers.length,
         students: adminUsers.filter((u) => u.role === "aluno").length,
@@ -199,7 +199,7 @@ export default function OverviewHub({
       <section className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
         <div className="max-w-2xl space-y-4">
           <p className="font-mono text-xs uppercase tracking-[0.22em] text-[#C8B560]">
-            VERITAS // UNIMAX
+            VERITAS — UNIMAX
           </p>
           <h1 className="font-display text-4xl font-semibold leading-[1.05] tracking-tight text-[#F0EDE6] sm:text-6xl">
             De quem e a resposta quando a IA decide por voce?
@@ -482,7 +482,7 @@ export default function OverviewHub({
               <div className="flex flex-col justify-between gap-3 border-b border-[#5C5C5C]/25 pb-4 sm:flex-row sm:items-center">
                 <div>
                   <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-[#C8B560]">
-                    Painel Administrativo // {currentUser.admin_profile.department}
+                    Painel Administrativo — {currentUser.admin_profile.department}
                   </span>
                   <h2 className="mt-1 font-display text-2xl font-semibold text-[#F0EDE6]">
                     {currentUser.full_name}

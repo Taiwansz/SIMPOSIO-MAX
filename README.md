@@ -1,4 +1,4 @@
-# SIMPOSIO-MAX // VERITAS
+# SIMPOSIO-MAX — VERITAS
 
 > **Plataforma de Caderno de Estudo com Copiloto Critico, Exame Forense de IA, Prova de Autoria em 60s e Arena Coletiva em Sala de Aula**
 > *Submissao Oficial ao IV Simposio de Inteligencia Artificial — Centro Universitario Max Planck (UniMAX)*

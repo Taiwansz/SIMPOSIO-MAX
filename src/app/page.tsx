@@ -56,7 +56,7 @@ export default function LandingPage() {
                 Thinka
               </span>
               <span className="font-mono text-[10px] uppercase text-[#5C5C5C]">
-                // VERITAS
+                VERITAS
               </span>
             </div>
           </Link>
@@ -113,7 +113,7 @@ export default function LandingPage() {
           {/* Eyebrow estritamente técnico em monospace */}
           <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-[#C8B560]">
             <span className="h-1.5 w-1.5 rounded-full bg-[#C8B560]" />
-            <span>IV Simpósio de IA UniMAX // Eixo: De Quem é a Resposta?</span>
+            <span>IV Simpósio de IA UniMAX — Eixo: De Quem é a Resposta?</span>
           </div>
 
           {/* Titulo editorial de alta autoridade */}
@@ -283,7 +283,7 @@ export default function LandingPage() {
       <section id="motores" className="mx-auto max-w-6xl px-6 py-24">
         <div className="flex flex-col justify-between gap-4 border-b border-[#2A2A2A] pb-6 sm:flex-row sm:items-end">
           <div>
-            <span className="font-mono text-xs uppercase text-[#C8B560]">02 // Componentes</span>
+            <span className="font-mono text-xs uppercase text-[#C8B560]">02. Componentes</span>
             <h2 className="mt-1 font-display text-2xl font-bold text-[#F0EDE6] sm:text-3xl">
               Arquitetura Operacional
             </h2>
@@ -382,7 +382,7 @@ export default function LandingPage() {
             <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
               <div>
                 <span className="font-mono text-xs text-[#C8B560]">
-                  DOCUMENTO OFICIAL // 6.942 CARACTERES
+                  DOCUMENTO OFICIAL • 6.942 CARACTERES
                 </span>
                 <h3 className="mt-2 font-display text-xl font-bold text-[#F0EDE6] sm:text-2xl">
                   Resumo Ampliado Submetido ao IV Simpósio de IA da UniMAX
@@ -471,7 +471,7 @@ export default function LandingPage() {
           <div>
             <div className="flex items-center gap-2">
               <span className="font-mono text-xs font-semibold text-[#F0EDE6]">
-                Thinka // VERITAS Epistemic OS
+                Thinka VERITAS Epistemic OS
               </span>
               <span className="text-[10px] text-[#5C5C5C]">
                 — Versão 2.0 (Hardened)

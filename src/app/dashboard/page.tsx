@@ -720,7 +720,7 @@ export default function DashboardPage() {
                   }}
                   className="font-display text-sm font-semibold tracking-wide text-[#F0EDE6] hover:text-[#C8B560]"
                 >
-                  Thinka <span className="text-xs font-normal text-[#C8B560]">// VERITAS</span>
+                  Thinka <span className="text-xs font-normal text-[#C8B560]">VERITAS</span>
                 </button>
                 <Link
                   href="/"

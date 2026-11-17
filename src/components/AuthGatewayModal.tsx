@@ -356,7 +356,7 @@ export default function AuthGatewayModal({
           <div className="flex items-start justify-between gap-4 border-b border-[#5C5C5C]/25 pb-4">
             <div>
               <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#C8B560]">
-                Acesso & Identidade // LGPD
+                Acesso & Identidade • LGPD
               </span>
               <h2 className="mt-1 font-display text-xl font-semibold text-[#F0EDE6]">
                 Conta VERITAS
