@@ -19,6 +19,24 @@ import {
   projectResponseToArena,
 } from "@/lib/veritas-engine/arena";
 import { analyzeStudentNote } from "@/lib/veritas-engine/study-notebook";
+import {
+  assertAccountCanAuthenticate,
+  buildLgpdExportPackage,
+  canPerformAction,
+  formatPhoneBR,
+  projectUserProfileForViewer,
+  validateRegistrationPayload,
+} from "@/lib/veritas-engine/identity-rbac";
+import { hashPassword, verifyPassword } from "@/lib/veritas-engine/password-crypto";
+import {
+  SEED_ACTIVITY_LOGS,
+  SEED_AUTHORSHIP_PROOFS,
+  SEED_CLASSES,
+  SEED_ENROLLMENTS,
+  SEED_SESSIONS,
+  SEED_STUDY_NOTES,
+  SEED_USERS,
+} from "@/lib/veritas-engine/seed-data";
 
 describe("1. Motor Raio-X da IA (Computacao, Saude, Negocios)", () => {
   it("simula colapso quando limite e ultrapassado e aprova apenas linha e correcao certas", () => {
@@ -141,5 +159,130 @@ describe("5. Motor Caderno Pessoal e Radar de Provas (Copiloto Critico)", () => 
       examDaysLeft: 5,
     });
     expect(solid.readinessPct).toBeGreaterThanOrEqual(75);
+  });
+});
+
+describe("6. Motor Identidade, RBAC, Validacoes, Privacidade e LGPD", () => {
+  it("aplica mascara de telefone, rejeita duplicidade e valida campos por perfil", () => {
+    expect(formatPhoneBR("19991428801")).toBe("(19) 99142-8801");
+
+    const duplicateCheck = validateRegistrationPayload(
+      {
+        role: "aluno",
+        full_name: "Lucas Andrade",
+        birth_date: "2003-04-12",
+        email: "matheus.santos@unimax.edu.br",
+        phone: "(19) 99142-8801",
+        username: "matheus.santos",
+        password: "Segredo123",
+        confirm_password: "Segredo123",
+        country: "Brasil",
+        state: "SP",
+        city: "Indaiatuba",
+        institution: "UniMAX",
+        terms_accepted: true,
+        privacy_accepted: false,
+        student_profile: {
+          education_level: "Ensino Superior",
+          course: "Ciencia da Computacao",
+          registration_code: "52399999",
+        },
+      },
+      SEED_USERS
+    );
+    expect(duplicateCheck.valid).toBe(false);
+    expect(duplicateCheck.errors.email).toBeDefined();
+    expect(duplicateCheck.errors.username).toBeDefined();
+    expect(duplicateCheck.errors.privacy_accepted).toBeDefined();
+
+    const validTeacher = validateRegistrationPayload(
+      {
+        role: "professor",
+        full_name: "Prof. Marcos Souza",
+        birth_date: "1982-07-10",
+        email: "marcos.souza@unimax.edu.br",
+        phone: "19998887766",
+        username: "marcos.souza",
+        password: "Docente@2026",
+        confirm_password: "Docente@2026",
+        country: "Brasil",
+        state: "SP",
+        city: "Campinas",
+        institution: "UniMAX",
+        terms_accepted: true,
+        privacy_accepted: true,
+        teacher_profile: {
+          academic_degree: "Mestrado",
+          specialization: "Redes",
+          subjects_taught: ["Redes de Computadores"],
+          institutional_validation_code: "UNIMAX-DOC-2026",
+        },
+      },
+      SEED_USERS
+    );
+    expect(validTeacher.valid).toBe(true);
+  });
+
+  it("verifica senha com scrypt/seed, estados de conta e matriz RBAC estrita", () => {
+    const hash = hashPassword("SenhaForte@99");
+    expect(verifyPassword("SenhaForte@99", hash)).toBe(true);
+    expect(verifyPassword("SenhaErrada", hash)).toBe(false);
+
+    const aluno = SEED_USERS.find((u) => u.role === "aluno")!;
+    const prof = SEED_USERS.find((u) => u.role === "professor")!;
+    const admin = SEED_USERS.find((u) => u.role === "administrador")!;
+
+    expect(assertAccountCanAuthenticate(aluno).allowed).toBe(true);
+    expect(
+      assertAccountCanAuthenticate({ ...aluno, account_status: "suspensa" }).allowed
+    ).toBe(false);
+    expect(
+      assertAccountCanAuthenticate({
+        ...aluno,
+        account_status: "pendente_verificacao",
+      }).requiresVerification
+    ).toBe(true);
+
+    // Matriz RBAC
+    expect(canPerformAction(aluno, "manage_users")).toBe(false);
+    expect(canPerformAction(aluno, "create_class")).toBe(false);
+    expect(canPerformAction(aluno, "request_class_join")).toBe(true);
+
+    expect(canPerformAction(prof, "manage_users")).toBe(false);
+    expect(canPerformAction(prof, "create_class")).toBe(true);
+    expect(canPerformAction(prof, "approve_enrollment", prof.id)).toBe(true);
+    expect(canPerformAction(prof, "approve_enrollment", "outro-docente")).toBe(false);
+
+    expect(canPerformAction(admin, "manage_users")).toBe(true);
+    expect(canPerformAction(admin, "view_admin_dashboard")).toBe(true);
+  });
+
+  it("respeita privacidade de perfil e exporta pacote completo LGPD sem senha", () => {
+    const beatriz = SEED_USERS.find((u) => u.username === "beatriz.almeida")!;
+    const drCarlos = SEED_USERS.find((u) => u.role === "administrador")!;
+    const stranger = { ...SEED_USERS[0], id: "outro-aluno" };
+
+    // Beatriz usa perfil visivel apenas para turma: desconhecido sem turma em comum ve perfil redigido
+    const redactedView = projectUserProfileForViewer(beatriz, stranger, false);
+    expect(redactedView.isRedacted).toBe(true);
+    expect(redactedView.email).toBeNull();
+    expect(redactedView.phone).toBeNull();
+
+    const adminView = projectUserProfileForViewer(beatriz, drCarlos, false);
+    expect(adminView.isRedacted).toBe(false);
+    expect(adminView.email).toBe(beatriz.email);
+
+    const lgpd = buildLgpdExportPackage({
+      user: SEED_USERS[0],
+      enrollments: SEED_ENROLLMENTS,
+      classes: SEED_CLASSES,
+      notes: SEED_STUDY_NOTES,
+      proofs: SEED_AUTHORSHIP_PROOFS,
+      sessions: SEED_SESSIONS,
+      activityLogs: SEED_ACTIVITY_LOGS,
+    });
+    expect(lgpd.schema).toBe("VERITAS-LGPD-EXPORT-V1");
+    expect((lgpd.account as { password_hash?: string }).password_hash).toBeUndefined();
+    expect(lgpd.linkedClasses.length).toBeGreaterThanOrEqual(2);
   });
 });

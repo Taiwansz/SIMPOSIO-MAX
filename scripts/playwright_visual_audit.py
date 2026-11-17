@@ -75,10 +75,15 @@ def main() -> None:
                 ("Raio-X da IA", "02_desktop_autopsy.png"),
                 ("Teste de Autoria", "03_desktop_mutation.png"),
                 ("Arena ao Vivo", "04_desktop_arena.png"),
+                ("Turmas", "09_desktop_classes.png"),
+                ("Perfil", "10_desktop_profile.png"),
                 ("Resultados", "05_desktop_faculty.png"),
+                ("Ajustes", "11_desktop_settings.png"),
             ]:
                 desktop_nav.get_by_role("button", name=label).click()
                 page.wait_for_timeout(700)
+                if page.evaluate("document.documentElement.scrollWidth > window.innerWidth"):
+                    raise AssertionError(f"Overflow horizontal detectado em {label} Desktop.")
                 page.screenshot(path=str(SCREENSHOT_DIR / fname))
 
             page.goto(f"{base_url}/apresentacao", wait_until="networkidle")
@@ -94,16 +99,23 @@ def main() -> None:
             page.screenshot(path=str(SCREENSHOT_DIR / "07_mobile_home.png"))
 
             mobile_nav = page.locator("nav[aria-label='Navegacao mobile']")
-            mobile_nav.get_by_role("button", name="Arena ao Vivo").click()
-            page.wait_for_timeout(700)
-            page.screenshot(path=str(SCREENSHOT_DIR / "08_mobile_arena.png"))
+            for mlabel, mfname in [
+                ("Arena ao Vivo", "08_mobile_arena.png"),
+                ("Turmas", "12_mobile_classes.png"),
+                ("Ajustes", "13_mobile_settings.png"),
+            ]:
+                mobile_nav.get_by_role("button", name=mlabel).click()
+                page.wait_for_timeout(700)
+                if page.evaluate("document.documentElement.scrollWidth > window.innerWidth"):
+                    raise AssertionError(f"Overflow horizontal detectado em {mlabel} Mobile.")
+                page.screenshot(path=str(SCREENSHOT_DIR / mfname))
 
             browser.close()
 
         if console_errors or page_errors:
             raise AssertionError(f"Erros detectados: console={console_errors}, page={page_errors}")
 
-        print(f"[AUDIT OK] 8 screenshots VERITAS salvos em {SCREENSHOT_DIR}; 0 erros; 0 overflow.")
+        print(f"[AUDIT OK] Screenshots VERITAS salvos em {SCREENSHOT_DIR}; 0 erros; 0 overflow.")
     finally:
         proc.terminate()
         try:
