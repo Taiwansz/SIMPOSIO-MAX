@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+:root {
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --bg-chassis: #060606;
+  --bg-surface: #0d0e12;
+  --bg-elevated: #14161d;
+  --gold-chicane: #c8b560;
+  --gold-specular: #fff2ac;
+  --emerald-signal: #10b981;
+  --amber-signal: #f59e0b;
+  --crimson-signal: #ef4444;
+  --slate-muted: #94a3b8;
+}
+
+@layer base {
+  html,
+  body {
+    background-color: var(--bg-chassis);
+    color: #f1f5f9;
+    font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: var(--font-display), system-ui, sans-serif;
+  }
+
+  code,
+  pre,
+  .font-mono {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.bg-dot-matrix {
+  background-image: radial-gradient(rgba(200, 181, 96, 0.14) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Liquid Glass Cupertino + Chanfro Especular 1px */
+.liquid-glass {
+  background: linear-gradient(
+    180deg,
+    rgba(22, 24, 30, 0.78) 0%,
+    rgba(12, 13, 17, 0.88) 100%
+  );
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.18),
+    0 24px 48px -20px rgba(0, 0, 0, 0.85);
+}
+
+/* Geometria Concentrica Doppelrand (R_inner = R_outer - Padding) */
+.doppelrand-outer {
+  border-radius: 22px;
+  padding: 5px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.16);
+}
+
+.doppelrand-inner {
+  border-radius: 17px;
+  background: rgba(11, 12, 16, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #fff2ac 0%, #c8b560 55%, #9a863a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Scrollbar sutil */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #08090c;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(200, 181, 96, 0.25);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(200, 181, 96, 0.45);
+}
